@@ -21,6 +21,8 @@ class App extends Component {
         hasMore: true,
         height: 500,
         html: "hjkhjkhjkhjk",
+        mode: 'Data',
+        left: 300,
       location: [
         {
           id: 0,
@@ -98,7 +100,9 @@ class App extends Component {
         }
       ]
     }
+
     this.handleChange = this.handleChange.bind(this)
+    this.handleResize = this.handleResize.bind(this)
   }
 
   handleChange(e) {
@@ -143,15 +147,26 @@ class App extends Component {
   }
 
   handleTabChange(e) {
+    this.setState({mode:e})
     console.log('HERE', e)
   }
 
+  handleResize(v) {
+    this.setState({left:v})
+  }
+
   render () {
+if(this.state.mode !== 'Data') {
+  return (
+    <div>Analyze</div>
+  )
+}
+
     return (
       <div className='App'>
-        <ResizablePanels>
-          <div className="App">
-          <div className="wrapper">
+      <div style={{display: 'flex'}}>
+      <div style={{width: this.state.left + 'px'}}>
+      <div className="wrapper">
           <Dropdown
             title="Cache"
             list={this.state.fruit}
@@ -159,6 +174,27 @@ class App extends Component {
           /> 
          <a href="#" className="btn btn-4"><span>New <FontAwesome name='bolt' /></span></a> 
           </div>
+      </div>
+      <div style={{flexGrow:1}}>
+      <div style={{height:'45px', width:'100%', backgroundColor:'#f0f0f0'}}>
+           <ButtonBar
+            items={['Data', 'Analyze']}
+            activeTab='Data'
+            onSelectTab={this.handleTabChange.bind(this)}
+          />
+           </div>
+      </div>
+      </div>
+        <ResizablePanels onResizing={this.handleResize}>
+          <div className="App">
+          {/* <div className="wrapper">
+          <Dropdown
+            title="Cache"
+            list={this.state.fruit}
+            resetThenSet={this.resetThenSet}
+          /> 
+         <a href="#" className="btn btn-4"><span>New <FontAwesome name='bolt' /></span></a> 
+          </div> */}
           <div className="pattern-input" style={{marginTop: '-10'}}>
           <FontAwesome name ='search' style={{margin:'15px', position: 'absolute'}} />
               <input
@@ -201,13 +237,13 @@ class App extends Component {
           </div>
           </div>
          <div>
-           <div style={{height:'45px', width:'100%', backgroundColor:'#f0f0f0'}}>
+           {/* <div style={{height:'45px', width:'100%', backgroundColor:'#f0f0f0'}}>
            <ButtonBar
             items={['Data', 'Analyze']}
             activeTab='Data'
             onSelectTab={this.handleTabChange.bind(this)}
           />
-           </div>
+           </div> */}
            <div style={{paddingTop:'10px', paddingRight: '20px'}}>
            <div style={{display: 'flex', justifyContent: 'flex-end', width: '100%'}}>
            <div style={{paddingLeft: '5px', cursor:'pointer', paddingRight: '5px', display: 'inline-block'}}><FontAwesome name='expand' />  </div>
