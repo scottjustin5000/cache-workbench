@@ -1,0 +1,182 @@
+.wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+.dd-wrapper {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  position: relative;
+  width: 222px;
+}
+.dd-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  line-height: 38px;
+  border: 1px solid #dfdfdf;
+  border-radius: 3px;
+  cursor: default;
+  position: relative;
+  background-color: #fff;
+}
+.dd-header span {
+  margin-right: 20px;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+.dd-header-title {
+  font-weight: 300;
+  margin: 2px 20px;
+  margin-right: 30px;
+  transition: 0.15s ease;
+}
+.angle-down {
+  color: #000;
+  margin-right: 20px;
+}
+.sub-menu { 
+  visibility:hidden;
+  overflow:hidden;
+  width: 100%;
+  position: absolute;
+  background-color: #fff;
+  font-weight: 700;
+  padding: 5px 0;
+  /* max-height: 215px; */
+  height:0;
+  -webkit-transition:height 200ms ease-in;
+  -moz-transition:height 200ms ease-in;
+  -o-transition:height 200ms ease-in;
+  transition:height 200ms ease-in;
+}
+.dd-list {
+  transition: 0.5s ease;
+  z-index: 10;
+  position: absolute;
+  width: 100%;
+  border: 1px solid #dfdfdf;
+  border-top: none;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 2px 5px -1px #e8e8e8;
+  box-shadow: 0 2px 5px -1px #e8e8e8;
+  font-weight: 700;
+  padding: 15px 0;
+  max-height: 215px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.dd-list-open {
+  opacity: 0;
+  transition: 0.5s ease;
+  z-index: 10;
+  position: absolute;
+  width: 100%;
+  border: 1px solid #dfdfdf;
+  border-top: none;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 2px 5px -1px #e8e8e8;
+  box-shadow: 0 2px 5px -1px #e8e8e8;
+  font-weight: 700;
+  padding: 15px 0;
+  max-height: 215px;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.dd-list-item {
+  width: 100%;
+  /* font-size: 1.5rem; */
+  padding: 8px 10px;
+  line-height: 1.6rem;
+  cursor: default;
+  display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.dd-list-item.selected {
+  color: #fff;
+  background-color: #ffcc01;
+}
+.dd-list-item:hover {
+  color: #fff;
+  background-color: #ffcc01;
+}
+.dd-wrapper-single {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  position: relative;
+  width: 265px;
+}
+.dd-wrapper-single .dd-header {
+  border: 1px solid #ccc;
+}
+.dd-wrapper-single .dd-header .dd-header-name {
+  font-weight: 400;
+}
+.dd-wrapper-single .dd-list {
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+.dd-header.active .arrow {
+  -webkit-transform: rotate(45deg) translate(-5px, -5px);
+          transform: rotate(45deg) translate(-5px, -5px);
+}
+
+.dd-header.active .arrow:before {
+  -webkit-transform: translate(10px, 0);
+          transform: translate(10px, 0);
+}
+.dd-header.active .arrow:after {
+  -webkit-transform: rotate(90deg) translate(10px, 0);
+          transform: rotate(90deg) translate(10px, 0);
+}
+
+.arrow {
+  width: 13px;
+  height: 13px;
+  display: inline-block;
+  position: relative;
+  bottom: -5px;
+  left: -10px;
+  transition: 0.4s ease;
+  margin-top: 2px;
+  text-align: left;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  float: right;
+}
+.arrow:before, .arrow:after {
+  position: absolute;
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 3px;
+  background-color: #000;
+  transition: 0.4s ease;
+}
+.arrow:after {
+  position: absolute;
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+  top: -5px;
+  left: 5px;
+}
