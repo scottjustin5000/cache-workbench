@@ -1,28 +1,3 @@
-.App {
-  text-align: center;
-  height: 100vh;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
 .btn {
   color: #ff0000; 
   cursor: pointer;
@@ -70,7 +45,7 @@ article[contenteditable="true"] {
   margin-right: 15px;
   min-height: 500px;
   border: 1px dashed #aaa;
-  
+  word-break: break-all;
 }
 .pattern-input {
   margin-top: -25px;
@@ -79,4 +54,32 @@ article[contenteditable="true"] {
 width:80%;
 line-height: 45px;
 padding-left:35px;
+}
+
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-main {
+  position:absolute;
+  z-index:100;
+  background: white;
+  height: auto;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
 }

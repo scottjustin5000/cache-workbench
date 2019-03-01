@@ -64,13 +64,10 @@ class ScrollPanel extends Component {
   onScrollListener (event) {
     const target = event.target
 
-    // return immediately if the action has already been triggered,
-    // prevents multiple triggers.
     if (this.state.scrolling) return
 
     const atBottom = this.isElementAtBottom(target)
 
-    // call the `next` function in the props to trigger the next data fetch
     if (atBottom && this.props.hasMore) {
       this.setState({ scrolling: true, showLoader: true })
       this.props.next()

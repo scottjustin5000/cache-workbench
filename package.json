@@ -5,13 +5,18 @@
   "homepage": "./",
   "main": "public/electron.js",
   "dependencies": {
+    "bluebird": "^3.5.3",
     "electron-builder": "^20.18.0",
     "font-awesome": "^4.7.0",
+    "hiredis": "^0.5.0",
+    "keytar": "^4.4.1",
     "react": "^16.8.1",
     "react-contenteditable": "^3.2.6",
     "react-dom": "^16.8.1",
     "react-fontawesome": "^1.6.1",
-    "react-scripts": "2.1.5"
+    "react-scripts": "2.1.5",
+    "redis": "^2.8.0",
+    "zlib": "^1.0.5"
   },
   "scripts": {
     "react-start": "react-scripts start",
@@ -35,6 +40,7 @@
   "devDependencies": {
     "concurrently": "^4.1.0",
     "electron": "^4.0.4",
+    "electron-rebuild": "^1.8.4",
     "install": "^0.12.2",
     "npm": "^6.8.0",
     "wait-on": "^3.2.0"
