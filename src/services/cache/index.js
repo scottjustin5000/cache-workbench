@@ -17,6 +17,15 @@ class Cache {
     }
   }
 
+  getType (key) {
+    return new Promise((resolve, reject) => {
+      this.getClient().type(key, (err, res) => {
+        if (err) return console.log('Error:', err)
+        return resolve(res)
+      })
+    })
+  }
+
   getKeys () {
     return new Promise((resolve, reject) => {
       this.getClient().keys('*', (err, keys) => {
@@ -30,6 +39,27 @@ class Cache {
         }
       })
     })
+  }
+
+  remove (key) {
+    return new Promise((resolve, reject) => {
+      this.getClient().del(key, (err, keys) => {
+        if (err) {
+          return resolve()
+        }
+        return resolve()
+      })
+    })
+  }
+
+  async getKeysAndTypes () {
+    const keys = await this.getKeys()
+    const keysAndTypes = []
+    for (let i = 0; i < keys.length; i++) {
+      let keyType = await this.getType(keys[i])
+      keysAndTypes.push({ key: keys[i], type: keyType })
+    }
+    return Promise.resolve(keysAndTypes)
   }
 
   getByKey (key) {

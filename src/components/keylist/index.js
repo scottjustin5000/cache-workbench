@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
@@ -25,10 +24,7 @@ class ScrollPanel extends Component {
     }
 
     this.onScrollListener = this.onScrollListener.bind(this)
-    // maybe debounce...
     this.throttledOnScrollListener = debounce(this.onScrollListener, 150).bind(this)
-
-    // this.getScrollableTarget = this.getScrollableTarget.bind(this)
     this.infScroll = React.createRef()
   }
 
@@ -44,7 +40,6 @@ class ScrollPanel extends Component {
     // do nothing when dataLength and key are unchanged
     if (this.props.key === props.key && this.props.dataLength === props.dataLength) return
 
-    // update state when new data was sent in
     this.setState({
       showLoader: false,
       scrolling: false
@@ -53,7 +48,6 @@ class ScrollPanel extends Component {
 
   isElementAtBottom (target) {
     const clientHeight = target.clientHeight
-
     const threshold = 0.8 * 100
 
     return (
@@ -63,7 +57,6 @@ class ScrollPanel extends Component {
 
   onScrollListener (event) {
     const target = event.target
-
     if (this.state.scrolling) return
 
     const atBottom = this.isElementAtBottom(target)
@@ -77,17 +70,14 @@ class ScrollPanel extends Component {
 
   render () {
     const style = {
-      height: this.props.height || 'auto',
-      overflow: 'auto',
-      WebkitOverflowScrolling: 'touch',
-      ...this.props.style
+      height: this.props.height,
+      overflow: 'auto'
     }
     const hasChildren = !!(this.props.children && this.props.children.length)
 
     return (
       <div>
         <div
-          className={`infinite-scroll-component ${this.props.className || ''}`}
           ref={this.infScroll}
           style={style}
         >
@@ -96,8 +86,7 @@ class ScrollPanel extends Component {
             !hasChildren &&
             this.props.hasMore &&
             this.props.loader}
-          {this.state.showLoader && this.props.hasMore && this.props.loader}
-          {!this.props.hasMore && this.props.endMessage}
+
         </div>
       </div>
     )

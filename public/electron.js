@@ -1,22 +1,30 @@
 const electron = require('electron')
+const keytar = require('keytar')
 // const Menu = require('electron').Menu
 // const menu = require('./menu')
 // Module to control application life.
 const app = electron.app
+const ipcMain = electron.ipcMain
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
 // const path = require('path')
 // const url = require('url')
+ipcMain.on('get-password', (event, user) => {
+  event.returnValue = keytar.getPassword('cache-workbench', user)
+})
 
+ipcMain.on('set-password', (event, key, pass) => {
+  event.returnValue = keytar.setPassword('cache-workbench', key, pass)
+})
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
-
 function createWindow () {
   // Create the browser window.
   // Menu.setApplicationMenu(menu)
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 800, height: 650, maximizable: false, webPreferences: {nodeIntegration: true}})
+  mainWindow.remote = require('electron').remote
 
   // and load the index.html of the app.
   // const startUrl = process.env.ELECTRON_START_URL || url.format({

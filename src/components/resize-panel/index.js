@@ -19,7 +19,8 @@ function unFocus (document, window) {
 class ResizablePanel extends Component {
   constructor () {
     super()
-
+    this.oldX = 0
+    this.startX = 0
     this.state = {
       isDragging: false,
       left: 300
@@ -34,6 +35,7 @@ class ResizablePanel extends Component {
   }
 
   startResize (event) {
+    this.oldx = event.pageX
     unFocus(document, window)
     this.setState({
       isDragging: true
@@ -51,10 +53,21 @@ class ResizablePanel extends Component {
   }
 
   betweenBounds (event) {
+    let direction = ''
+    if (event.pageX < this.oldx) {
+      direction = 'left'
+    } else if (event.pageX > this.oldx) {
+      direction = 'right'
+    }
+    this.oldx = event.pageX
     const xCord = event.clientX
-
     const xPercent = xCord / window.innerWidth * 100
-    // need direction here.... to actually determine this
+    if (direction === 'left' && xCord > 300) {
+      return true
+    } else if (direction === 'right' && Math.round(xPercent) <= 80) {
+      return true
+    }
+
     if (xCord > 300 && Math.round(xPercent) <= 80) return true
   }
 
@@ -74,7 +87,7 @@ class ResizablePanel extends Component {
 
   render () {
     return (
-      <div style={{display: 'flex', height: '100vh'}}>
+      <div style={{display: 'flex'}}>
         <div className='panel' style={{width: this.state.left + 'px'}}>
           {this.props.children[0]}
         </div>

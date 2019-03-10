@@ -1,3 +1,10 @@
+.data-explorer-wrapper {
+  text-align: center;
+  /* height: 100vh; */
+}
+.data-explorer-top {
+  display: flex;
+}
 .btn {
   color: #ff0000; 
   cursor: pointer;
@@ -38,7 +45,7 @@
   left: 120%;
   transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
 }
-article[contenteditable="true"] {
+/* article[contenteditable="true"] {
   font-family: sans-serif;
   margin-top: 5px;
   margin-left:15px;
@@ -46,7 +53,7 @@ article[contenteditable="true"] {
   min-height: 500px;
   border: 1px dashed #aaa;
   word-break: break-all;
-}
+} */
 .pattern-input {
   margin-top: -25px;
 }
@@ -82,4 +89,54 @@ padding-left:35px;
 
 .display-none {
   display: none;
+}
+
+.boxsizingBorder {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.editor-panel {
+  width:98%;
+padding-top: 10px;
+padding-bottom: 10px;
+padding-right: 20px;
+background-color: #f0f0f0;
+}
+
+.editor-panel-inner {
+  display: flex; 
+  justify-content: flex-end;
+   width: 100%
+}
+
+.editor-control-item {
+  padding-left: 5px; 
+  cursor: pointer;
+  padding-right: 5px; 
+  display: inline-block;
+}
+
+.server-controls {
+  display: flex; 
+  justify-content: flex-end;
+  padding-right: 15px; 
+  padding-top: 5px;
+}
+.server-controls button {
+  cursor: pointer
+}
+.wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.item-editor {
+  width: 98%;
+  height: 100%;
+  min-height: 500px;
 }

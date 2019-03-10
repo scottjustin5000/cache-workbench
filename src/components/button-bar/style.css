@@ -1,0 +1,14 @@
+.b-bar {
+  text-align: right;
+}
+.b-bar .item {
+  cursor: pointer;
+  display: inline-block;
+  padding: 12px;
+}
+.b-bar .item .icon {
+  margin-right: 5px;
+}
+.b-bar .item.is-active {
+  background: #dbdfe1;
+}

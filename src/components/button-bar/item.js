@@ -4,7 +4,7 @@ const Item = ({instanceKey, onSelected, active, title}) => {
     onMouseDown={() => {
       onSelected(instanceKey)
     }}
-    className={active ? 'tab-item active' : 'tab-item'}
+    className={active ? 'b-bar-item active' : 'b-bar-item'}
   >
     {title}
   </div>
