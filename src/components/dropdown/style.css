@@ -173,3 +173,26 @@
   top: -5px;
   left: 5px;
 }
+
+.item-wrapper {
+  display: inline-block;
+  width: 100%;
+  cursor: pointer;
+}
+
+.item-name {
+  width: 50%;
+  display: inline-block;
+  text-align: left;
+}
+
+.item-control-wrapper {
+  width: 50%; 
+  display: inline-block;
+}
+
+.item-control-button {
+  width: 50%; 
+  cursor: pointer;
+  display: inline-block;
+}

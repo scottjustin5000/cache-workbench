@@ -44,9 +44,16 @@ class Cache {
   remove (key) {
     return new Promise((resolve, reject) => {
       this.getClient().del(key, (err, keys) => {
-        if (err) {
-          return resolve()
-        }
+        if (err) return reject(err)
+        return resolve()
+      })
+    })
+  }
+
+  purge () {
+    return new Promise((resolve, reject) => {
+      this.getClient().flushdb((err) => {
+        if (err) return reject(err)
         return resolve()
       })
     })

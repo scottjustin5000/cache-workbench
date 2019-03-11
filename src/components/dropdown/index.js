@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+
 import FontAwesome from 'react-fontawesome'
 import './style.css'
 
@@ -37,7 +39,7 @@ class Dropdown extends Component {
     this.setState({
       headerTitle: item.name,
       listOpen: false
-    }, this.props.resetThenSet(item))
+    }, this.props.onItemSelected(item))
   }
 
   toggleList () {
@@ -61,12 +63,13 @@ class Dropdown extends Component {
         <ul className='sub-menu' onClick={e => e.stopPropagation()} style={style}>
           {!!(list && list.length) && list.map((item) => (
             <li className='dd-list-item' key={item.name} onClick={() => this.selectItem(item)}>
-              <div style={{display: 'inline-block', width: '100%'}}>
-                <div style={{width: '50%', display: 'inline-block', 'textAlign': 'left'}}>{item.name} {item.selected && <FontAwesome name='check' />}</div>
-                <div style={{width: '50%', display: 'inline-block'}}>
-                  <div style={{width: '50%', cursor: 'pointer', display: 'inline-block'}}><FontAwesome name='edit' /> </div>
-                  <div style={{width: '50%', cursor: 'pointer', display: 'inline-block'}}><FontAwesome name='trash-o' /></div>
+              <div className='item-wrapper'>
+                <div className='item-name'>{item.name} {item.selected && <FontAwesome name='check' />}</div>
+                { this.props.showControls && <div className='item-control-wrapper'>
+                  <div className='item-control-button'><FontAwesome name='edit' /> </div>
+                  <div className='item-control-button'><FontAwesome name='trash-o' /></div>
                 </div>
+                }
               </div>
             </li>
           ))}
@@ -75,5 +78,8 @@ class Dropdown extends Component {
     )
   }
 }
-
+Dropdown.propTypes = {
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func
+}
 export default Dropdown

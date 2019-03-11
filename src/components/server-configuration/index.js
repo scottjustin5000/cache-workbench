@@ -86,6 +86,4 @@ class ServerConfigurator extends React.Component {
     )
   }
 }
-
-// set default
 export default ServerConfigurator

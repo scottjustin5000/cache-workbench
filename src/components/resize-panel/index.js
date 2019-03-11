@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Proptypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import Resizer from './resizer'
 import './style.css'
@@ -102,4 +103,9 @@ class ResizablePanel extends Component {
     )
   }
 }
+
+ResizablePanel.propTypes = {
+  onResizing: Proptypes.func
+}
+
 export default ResizablePanel

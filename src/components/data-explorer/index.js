@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import FontAwesome from 'react-fontawesome'
+import PropTypes from 'prop-types'
 
 import ResizablePanels from '../resize-panel'
 import ListView from '../keylist'
 import ListItem from '../keylist/list-item'
+import NewItemModal from '../new-item'
 
 import './style.css'
 
@@ -12,7 +14,7 @@ const zlib = require('zlib')
 const gzip = Promise.promisify(zlib.gzip)
 const gunzip = Promise.promisify(zlib.gunzip)
 
-class DataExporer extends Component {
+class DataExplorer extends Component {
   constructor () {
     super()
 
@@ -21,6 +23,7 @@ class DataExporer extends Component {
       hasMore: false,
       contents: '',
       left: 300,
+      showModal: false,
       controlsEnabled: false
     }
 
@@ -34,11 +37,40 @@ class DataExporer extends Component {
     this.keySearch = this.keySearch.bind(this)
     this.expand = this.expand.bind(this)
     this.compress = this.compress.bind(this)
+    this.openAddItemModal = this.openAddItemModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
+    // this.reloadKeys = this.reloadKeys.bind(this)
+    this.purge = this.purge.bind(this)
+    this.addItem = this.addItem.bind(this)
   }
 
-  // handleChange (e) {
-  //   console.log(e)
-  // }
+  openAddItemModal () {
+    this.setState({
+      showModal: true
+    })
+  }
+
+  closeModal () {
+    this.setState({
+      showModal: false
+    })
+  }
+
+  async addItem (item) {
+    await this.closeModal()
+
+    // show modal
+    // select type....
+  }
+  async purge () {
+    try {
+      await this.props.cacheClient.purge()
+      this.getKeys()
+    } catch (err) {
+      // need to notify
+      console.log(err)
+    }
+  }
 
   toggleSelected (id, key) {
     let temp = JSON.parse(JSON.stringify(this.state[key]))
@@ -57,6 +89,9 @@ class DataExporer extends Component {
           hasMore: this.keys.length > 12,
           controlsEnabled: true
         })
+      }).catch((err) => {
+        // need to notify
+        console.log(err)
       })
   }
 
@@ -143,7 +178,7 @@ class DataExporer extends Component {
             </div>
             <div>
               <div className='server-controls'>
-                <button title='add item' disabled={!this.state.controlsEnabled}><FontAwesome name='plus' /></button>
+                <button title='add item' disabled={!this.state.controlsEnabled} onClick={this.openAddItemModal}><FontAwesome name='plus' /></button>
                 <button title='reload keys' disabled={!this.state.controlsEnabled}><FontAwesome name='refresh' /></button>
                 <button title='purge cache' disabled={!this.state.controlsEnabled}><FontAwesome name='trash-o' /></button>
               </div>
@@ -182,10 +217,14 @@ class DataExporer extends Component {
             </div>
           </div>
         </ResizablePanels>
-
+        <div> <NewItemModal submitItem={this.addItem} show={this.state.showModal} handleClose={this.closeModal} /></div>
       </div>
     )
   }
 }
 
-export default DataExporer
+DataExplorer.propTypes = {
+  cacheClient: PropTypes.object
+}
+
+export default DataExplorer

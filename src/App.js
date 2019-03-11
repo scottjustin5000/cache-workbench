@@ -22,7 +22,7 @@ class App extends Component {
       cacheClient: null
     }
     this.handleChange = this.handleChange.bind(this)
-    this.resetThenSet = this.resetThenSet.bind(this)
+    this.onDbSelected = this.onDbSelected.bind(this)
     this.newServer = this.newServer.bind(this)
     this.hideModal = this.hideModal.bind(this)
   }
@@ -51,7 +51,7 @@ class App extends Component {
     })
   }
 
-  resetThenSet (item) {
+  onDbSelected (item) {
     // item.selected = true
     const dbs = this.state.dbs.map((m) => {
       if (m.name === item.name) {
@@ -83,9 +83,10 @@ class App extends Component {
           <div style={{width: this.state.left + 'px'}}>
             <div className='wrapper'>
               <Dropdown
+                showControls
                 title='Cache'
                 list={this.state.dbs}
-                resetThenSet={this.resetThenSet}
+                onItemSelected={this.onDbSelected}
               />
               <a href='#' onClick={this.newServer} className='btn btn-4'><span>New <FontAwesome name='bolt' /></span></a>
             </div>
