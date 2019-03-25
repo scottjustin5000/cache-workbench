@@ -2,6 +2,7 @@
 .new-item-container {
   max-width:520px;
   min-width: 400px;
+  min-height: 500px;
 	width:100%;
 	margin:0 auto;
   position:relative;
@@ -17,25 +18,29 @@
 }
 
 .configure input[type="text"], .configure button[type="submit"]{ 
-  font:400 12px/16px "Open Sans", Helvetica, Arial, sans-serif; 
+  font:400 16px "Open Sans", Helvetica, Arial, sans-serif; 
 }
 
 .configure {
-	background:#F9F9F9;
+	background:#383838;
 	padding:10px;
 }
 
 .configure h3 {
 	color: #F96;
 	display: block;
-	font-size: 30px;
+	font-size: 20px;
 	font-weight: 400;
 }
 
-.configure h4 {
-	margin:5px 0 15px;
-	display:block;
-	font-size:13px;
+.new-item-type-wrapper {
+  margin: 0 0 5px; 
+  padding-left: 5px;
+  text-align: left;
+}
+
+.configure-control-panel {
+  display: flex; 
 }
 
 fieldset {
@@ -49,9 +54,9 @@ fieldset {
 .configure input[type="text"] {
 	width:90%;
 	border:1px solid #CCC;
-	background:#FFF;
+	background:#383838;
 	margin:0 0 5px;
-	padding:10px;
+	padding:12px;
 }
 
 .configure input[type="text"]:hover{
@@ -65,7 +70,7 @@ fieldset {
 	cursor:pointer;
 	width:100%;
 	border:none;
-	background:#0CF;
+	background:#9370DB;
 	color:#FFF;
 	margin:0 0 5px;
 	padding:10px;
@@ -99,9 +104,15 @@ fieldset {
 :-ms-input-placeholder {
  color:#888;
 }
-#x {
+.close {
   position: absolute;
   cursor:pointer;
   top: 10px;
   right: 10px;
 }
+.key-name {
+  width:80%;
+  line-height:45px;
+  padding-left:35px;
+}
+

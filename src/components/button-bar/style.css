@@ -1,14 +1,17 @@
 .b-bar {
   text-align: right;
+  background-color:#383838; 
 }
 .b-bar .item {
   cursor: pointer;
   display: inline-block;
   padding: 12px;
+  color:#ffffff
 }
 .b-bar .item .icon {
   margin-right: 5px;
 }
 .b-bar .item.is-active {
   background: #dbdfe1;
+  color: #000000;
 }

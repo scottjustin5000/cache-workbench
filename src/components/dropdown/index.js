@@ -51,7 +51,7 @@ class Dropdown extends Component {
   render () {
     const {list} = this.props
     const {listOpen, headerTitle} = this.state
-    const height = (list || []).length * 50
+    const height = (list || []).length * 42
     // dynamically set height based on elements
     const style = this.state.listOpen ? { height: height + 'px', zIndex: '10', visibility: 'visible', border: '1px solid #dfdfdf', borderTop: 'none', 'boxShadow': '0 2px 5px -1px #e8e8e8', 'borderBottomRightRadius': '3px', 'borderBottomLeftRadius': '3px' } : {}
     return (
@@ -64,10 +64,10 @@ class Dropdown extends Component {
           {!!(list && list.length) && list.map((item) => (
             <li className='dd-list-item' key={item.name} onClick={() => this.selectItem(item)}>
               <div className='item-wrapper'>
-                <div className='item-name'>{item.name} {item.selected && <FontAwesome name='check' />}</div>
+                <div className='item-name'>{item.name} {item.selected && <FontAwesome name='check' style={{color: '#fff'}} />}</div>
                 { this.props.showControls && <div className='item-control-wrapper'>
-                  <div className='item-control-button'><FontAwesome name='edit' /> </div>
-                  <div className='item-control-button'><FontAwesome name='trash-o' /></div>
+                  <div className='item-control-button'><FontAwesome name='edit' style={{color: '#ffffff'}} /> </div>
+                  <div className='item-control-button'><FontAwesome name='trash-o' style={{color: '#ffffff'}} /></div>
                 </div>
                 }
               </div>

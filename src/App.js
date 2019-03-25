@@ -91,8 +91,8 @@ class App extends Component {
               <a href='#' onClick={this.newServer} className='btn btn-4'><span>New <FontAwesome name='bolt' /></span></a>
             </div>
           </div>
-          <div style={{flexGrow: 1}}>
-            <div style={{height: '45px', width: '100%', backgroundColor: '#f0f0f0'}}>
+          <div className='b-bar-container'>
+            <div className='b-bar-wrapper'>
               <ButtonBar
                 items={['Data', 'Analyze']}
                 active={this.state.mode}

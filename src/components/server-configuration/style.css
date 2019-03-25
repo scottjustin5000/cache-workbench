@@ -1,5 +1,5 @@
 
-.container {
+.server-container {
 	max-width:400px;
 	width:100%;
 	margin:0 auto;
@@ -15,22 +15,23 @@
 	text-rendering:optimizeLegibility;
 }
 
-	/* font-smoothing:antialiased; */
-#configure input[type="text"], #configure input[type="password"], #configure button[type="submit"], #configure input[type="number"]:hover { font:400 12px/16px "Open Sans", Helvetica, Arial, sans-serif; }
+.server-configure input[type="text"], #configure input[type="password"], #configure button[type="submit"], #configure input[type="number"]:hover { font:400 12px/16px "Open Sans", Helvetica, Arial, sans-serif; }
 
-#configure {
-	background:#F9F9F9;
+.server-configure {
+	background:#383838; 
 	padding:25px;
 }
 
-#configure h3 {
+.server-configure h3 {
 	color: #F96;
 	display: block;
 	font-size: 30px;
 	font-weight: 400;
 }
 
-#configure h4 {
+.server-configure h4 {
+  color:#ffffff;
+
 	margin:5px 0 15px;
 	display:block;
 	font-size:13px;
@@ -44,7 +45,7 @@ fieldset {
 	width: 100%;
 }
 
-#configure input[type="text"], #configure input[type="password"], #configure input[type="number"]{
+.server-configure input[type="text"], .server-configure input[type="password"], .server-configure input[type="number"]{
 	width:90%;
 	border:1px solid #CCC;
 	background:#FFF;
@@ -52,34 +53,34 @@ fieldset {
 	padding:10px;
 }
 
-#configure input[type="text"]:hover, #configure input[type="password"]:hover , #configure input[type="number"]:hover{
+.server-configure input[type="text"]:hover, .server-configure input[type="password"]:hover , .server-configure input[type="number"]:hover{
 	-webkit-transition:border-color 0.3s ease-in-out;
 	-moz-transition:border-color 0.3s ease-in-out;
 	transition:border-color 0.3s ease-in-out;
 	border:1px solid #AAA;
 }
 
-#configure button[type="submit"] {
+.server-configure button[type="submit"] {
 	cursor:pointer;
 	width:100%;
 	border:none;
-	background:#0CF;
-	color:#FFF;
+	background:#9370DB;
+	color:#FFFFFF;
 	margin:0 0 5px;
 	padding:10px;
 	font-size:15px;
 }
 
-#configure button[type="submit"]:hover {
-	background:#09C;
+.server-configure button[type="submit"]:hover {
+	background:#9370DB;
 	-webkit-transition:background 0.3s ease-in-out;
 	-moz-transition:background 0.3s ease-in-out;
 	transition:background-color 0.3s ease-in-out;
 }
 
-#configure button[type="submit"]:active { box-shadow:inset 0 1px 3px rgba(0, 0, 0, 0.5); }
+.server-configure button[type="submit"]:active { box-shadow:inset 0 1px 3px rgba(0, 0, 0, 0.5); }
 
-#configure input:focus {
+.server-configure input:focus {
 	outline:0;
 	border:1px solid #999;
 }
@@ -95,7 +96,7 @@ fieldset {
 :-ms-input-placeholder {
  color:#888;
 }
-#x {
+.server-configure-close {
   position: absolute;
   cursor:pointer;
   top: 10px;

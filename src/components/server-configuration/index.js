@@ -58,10 +58,10 @@ class ServerConfigurator extends React.Component {
       <div className={showHideClassName}>
         <section className='modal-main'>
           <div className='container'>
-            <button onClick={this.props.handleClose} id='x'>
+            <button onClick={this.props.handleClose} className='server-configure-close'>
             X
             </button>
-            <form id='configure' action=''>
+            <form className='server-configure' action=''>
               <h3>Connection Info</h3>
               <h4>configure and connect to your redis server</h4>
               <fieldset>

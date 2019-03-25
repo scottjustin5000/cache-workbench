@@ -1,0 +1,48 @@
+.list-view {
+  font-family: sans-serif;
+  font-size: 10px;
+  text-align: center;
+  display: flex;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.list-view main {
+  background-color: #383838;
+  color: #fff;
+  padding: 10px;
+  width:100%;
+  margin:5px;
+}
+
+.list-view ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list-view ul li {
+  background-color: #383838;
+  padding: 10px 10px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  line-height: 1;
+}
+
+.list-view li .drag {
+  margin-right: 15px;
+  margin-top:2px;
+  cursor: move;
+}
+
+.list-view li svg {
+  height: 2rem;
+  color: #fff;
+}
+
+.content {
+  background-color:#383838; 
+  border:none; 
+  color:white;
+}

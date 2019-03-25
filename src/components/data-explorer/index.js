@@ -165,7 +165,7 @@ class DataExplorer extends Component {
         <ResizablePanels onResizing={this.handleResize}>
           <div>
             <div className='pattern-input' style={{marginTop: '-10'}}>
-              <FontAwesome name='search' style={{margin: '15px', position: 'absolute'}} />
+              <FontAwesome name='search' style={{margin: '15px', position: 'absolute', color: '#ffffff'}} />
               <input
                 type='text'
                 className='search-input'
@@ -178,7 +178,7 @@ class DataExplorer extends Component {
             </div>
             <div>
               <div className='server-controls'>
-                <button title='add item' disabled={!this.state.controlsEnabled} onClick={this.openAddItemModal}><FontAwesome name='plus' /></button>
+                <button title='add item' disabled={this.state.controlsEnabled} onClick={this.openAddItemModal}><FontAwesome name='plus' /></button>
                 <button title='reload keys' disabled={!this.state.controlsEnabled}><FontAwesome name='refresh' /></button>
                 <button title='purge cache' disabled={!this.state.controlsEnabled}><FontAwesome name='trash-o' /></button>
               </div>
