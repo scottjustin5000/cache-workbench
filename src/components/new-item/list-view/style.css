@@ -44,5 +44,6 @@
 .content {
   background-color:#383838; 
   border:none; 
+  line-height: 35px;
   color:white;
 }

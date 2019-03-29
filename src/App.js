@@ -52,7 +52,6 @@ class App extends Component {
   }
 
   onDbSelected (item) {
-    // item.selected = true
     const dbs = this.state.dbs.map((m) => {
       if (m.name === item.name) {
         m.selected = true
@@ -70,7 +69,6 @@ class App extends Component {
 
   render () {
     /*
-        // need to split this...data-explorer top needs to be at app level...
     if (this.state.mode !== 'Data') {
       return (
         <div>Analyze</div>

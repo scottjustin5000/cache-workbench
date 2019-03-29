@@ -112,6 +112,7 @@ fieldset {
 }
 .key-name {
   width:80%;
+  color:#ffffff;
   line-height:45px;
   padding-left:35px;
 }

@@ -22,43 +22,14 @@ class NewItemModal extends React.Component {
       key: '',
       value: '',
       contents: '',
-      listItems: [{name: 'heloo', score: 0}, {name: 'heloo', score: 1} ]
+      listItems: []
     }
     this.addNewItem = this.addNewItem.bind(this)
     this.dataTypeSelected = this.dataTypeSelected.bind(this)
     this.onContentChanged = this.onContentChanged.bind(this)
     this.onKeyChanged = this.onKeyChanged.bind(this)
-    // move listview to edit....
-    // this will be for zest/set, list, etc
-    // hash will be JSON...string will be string...unless it is valid json
-    // in this form this will be like terminal...just write JSON...sorry dude but this is just a technical piece
-    // of software...
-
-    // lists
-    // https://www.sitepoint.com/using-redis-node-js/
-    // https://thisdavej.com/guides/redis-node/node/lists.html
-
-    // hashes
-    /*  https://medium.com/@stockholmux/store-javascript-objects-in-redis-with-node-js-the-right-way-1e2e89dbbf64
-   const shamu = {
-        type: 'killer whale',
-        age: 5,
-        lastFeedDate: 'Jan 06 2018',
-    };
-
-    try {
-        const key = 'shamu';
-        const result = await redis.hmset(key, shamu);
-        console.log(result);
-    }
-    catch (error) {
-        console.error(error);
-    }
-   */
-
-    // zset
-    // need to handle
-    // https://gist.github.com/danielrvt/91765654445006bb28e2
+    this.updateItems = this.updateItems.bind(this)
+    this.onClose = this.onClose.bind(this)
   }
 
   compress () {
@@ -71,15 +42,27 @@ class NewItemModal extends React.Component {
   }
 
   onContentChanged (e) {
-    console.log(e)
+    let json
+    try {
+      json = JSON.parse(e.target.value)
+    } catch (err) {}
+    if (json) {
+      json = JSON.stringify(json, null, 4)
+    } else {
+      json = e.target.value
+    }
+    this.setState({
+      contents: json
+    })
   }
 
   onKeyChanged (e) {
-    console.log(e)
+    this.setState({
+      key: e.target.value
+    })
   }
 
   dataTypeSelected (item) {
-    // if hash...notify needs to be JSON
     let selected = item.name
     const types = this.state.dataTypes.map((m) => {
       if (m.name === item.name) {
@@ -95,10 +78,30 @@ class NewItemModal extends React.Component {
     })
   }
 
-  addNewItem (e) {
+  resetState () {
+    this.setState({
+      selectedType: '',
+      key: '',
+      value: '',
+      contents: '',
+      listItems: []
+    })
+  }
+
+  async addNewItem (e) {
     e.preventDefault()
     e.stopPropagation()
-    this.props.submitItem()
+    await this.props.submitItem(this.state.key, this.state.contents, this.state.selectedType)
+    this.resetState()
+  }
+
+  updateItems (items) {
+    this.setState({listItems: items})
+  }
+
+  onClose () {
+    this.resetState()
+    this.props.handleClose()
   }
 
   render () {
@@ -107,7 +110,7 @@ class NewItemModal extends React.Component {
       <div className={showHideClassName}>
         <section className='modal-main'>
           <div className='new-item-container'>
-            <button className='close' onClick={this.props.handleClose}>
+            <button className='close' onClick={this.onClose}>
             X
             </button>
             <form className='configure' action=''>
@@ -123,9 +126,12 @@ class NewItemModal extends React.Component {
                   </div>
                   {
                     this.state.selectedType === 'STRING' && <div style={{display: 'flex', margin: 'auto 5px'}}>
-                      <div className='editor-control-item' onClick={this.compress}><FontAwesome name='compress' />  </div>
-                      <div className='editor-control-item' onClick={this.expand}><FontAwesome name='expand' />  </div>
+                      <div className='editor-control-item' onClick={this.compress}><FontAwesome name='compress' style={{color: '#ffffff'}} />  </div>
+                      <div className='editor-control-item' onClick={this.expand}><FontAwesome name='expand' style={{color: '#ffffff'}} />  </div>
                     </div>
+                  }
+                  {
+                    this.state.selectedType === 'HASH' && <div style={{ display: 'flex', margin: 'auto 5px', fontSize: '10px', color: '#ffffff' }}>*valid JSON required </div>
                   }
                 </div>
               </fieldset>
@@ -134,11 +140,11 @@ class NewItemModal extends React.Component {
               </fieldset>
               <fieldset>
                 <div>
-                  { (!this.state.selectedType || (this.state.selectedType === 'STRING' || this.state.selectedType === 'HASH')) && <textarea value={this.contents} style={{ width: '98%', height: '300px', color: '#ffffff', backgroundColor: '#383838' }} onChange={this.onContentChanged} /> }
+                  { (!this.state.selectedType || (this.state.selectedType === 'STRING' || this.state.selectedType === 'HASH')) && <textarea value={this.state.contents} style={{ width: '98%', height: '300px', color: '#ffffff', backgroundColor: '#383838' }} onChange={this.onContentChanged} /> }
                   { (this.state.selectedType !== 'STRING' && this.state.selectedType !== 'HASH') && this.state.selectedType &&
                   <div style={{display: 'flex'}}>
                     <div style={{ width: '100%', overflowY: 'scroll', height: '300px' }}>
-                      <ListView items={this.state.listItems} />
+                      <ListView items={this.state.listItems} updateItems={this.updateItems} />
                     </div>
                   </div>
                   }

@@ -39,7 +39,6 @@ class DataExplorer extends Component {
     this.compress = this.compress.bind(this)
     this.openAddItemModal = this.openAddItemModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
-    // this.reloadKeys = this.reloadKeys.bind(this)
     this.purge = this.purge.bind(this)
     this.addItem = this.addItem.bind(this)
   }
@@ -56,12 +55,11 @@ class DataExplorer extends Component {
     })
   }
 
-  async addItem (item) {
+  async addItem (key, item, type) {
+    await this.props.cacheClient.addItem(key, item, type)
     await this.closeModal()
-
-    // show modal
-    // select type....
   }
+
   async purge () {
     try {
       await this.props.cacheClient.purge()
@@ -102,8 +100,13 @@ class DataExplorer extends Component {
   }
 
   keySearch (value) {
-    const filtered = this.keys.filter(k => k.indexOf(value) > -1)
-    console.log(filtered)
+    if (!this.keys || !this.keys.length) return
+
+    const filtered = this.keys.filter(k => k.key.indexOf(value) > -1)
+
+    this.setState({
+      items: filtered
+    })
   }
 
   fetchMoreData () {
@@ -178,7 +181,7 @@ class DataExplorer extends Component {
             </div>
             <div>
               <div className='server-controls'>
-                <button title='add item' disabled={this.state.controlsEnabled} onClick={this.openAddItemModal}><FontAwesome name='plus' /></button>
+                <button title='add item' disabled={!this.state.controlsEnabled} onClick={this.openAddItemModal}><FontAwesome name='plus' /></button>
                 <button title='reload keys' disabled={!this.state.controlsEnabled}><FontAwesome name='refresh' /></button>
                 <button title='purge cache' disabled={!this.state.controlsEnabled}><FontAwesome name='trash-o' /></button>
               </div>

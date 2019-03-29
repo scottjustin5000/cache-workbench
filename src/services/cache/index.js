@@ -81,6 +81,76 @@ class Cache {
       })
     })
   }
+
+  addHashItem (key, propKey, value) {
+    return new Promise((resolve, reject) => {
+      this.getClient().hmset(key, propKey, value, (err, res) => {
+        if (err) return reject(err)
+        console.log(res)
+        return resolve()
+      })
+    })
+  }
+
+  async addHash (key, item) {
+    try {
+      const data = JSON.parse(item)
+      for (const prop in data) {
+        let value = data[prop]
+        if (typeof value === 'object') {
+          value = JSON.stringify(value)
+        }
+        const result = await this.addHashItem(key, prop, value)
+        console.log(result)
+      }
+      return Promise.resolve()
+    } catch (err) {
+      return Promise.reject(err)
+    }
+  }
+
+  rpush (key, items) {
+    if (!items || Array.isArray(items) || items.length) { items.unshift(key) }
+    return new Promise((resolve, reject) => {
+      this.getClient().rpush(items, (err, res) => {
+        if (err) return reject(err)
+        return res()
+      })
+    })
+  }
+
+  zadd (key, items) {
+    if (!items || Array.isArray(items) || items.length) { items.unshift(key) }
+    return new Promise((resolve, reject) => {
+      this.getClient().zadd(items, (err, res) => {
+        if (err) return reject(err)
+        return res()
+      })
+    })
+  }
+
+  addString (key, item) {
+    return new Promise((resolve, reject) => {
+      this.getClient().set(key, item, (err, res) => {
+        if (err) return reject(err)
+        return res()
+      })
+    })
+  }
+
+  addItem (key, item, type) {
+    console.log('ADD T')
+    if (type === 'STRING') {
+      return this.addString(key, item)
+    } else if (type === 'HASH') {
+      return this.addHash(key, item)
+    } else if (type === 'LIST') {
+      return this.rpush(key, item)
+    } else if (type === 'ZSET') {
+      return this.zadd(key, item)
+    }
+    return Promise.resolve()
+  }
 }
 
 export default Cache

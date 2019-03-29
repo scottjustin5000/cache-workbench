@@ -8,7 +8,7 @@ class ListItem extends Component {
   render () {
     return (
       <div className='key-item'>
-        <div className='key-item-type-wrapper'>  <span className='key-type str'>{this.props.type}</span> </div>
+        <div className='key-item-type-wrapper'>  <span className={`key-type ${this.props.type.toLowerCase()}`}>{this.props.type}</span> </div>
         <div className='key-item-name'>{this.props.name}</div>
         <div className='key-item-controls'>
           <div className='key-item-control' onClick={() => { this.props.onSelect(this.props.name) }}><FontAwesome name='edit' />  </div>
