@@ -79,7 +79,12 @@ class NewItemModal extends React.Component {
   }
 
   resetState () {
+    const types = this.state.dataTypes.map((m) => {
+      m.selected = false
+      return m
+    })
     this.setState({
+      types,
       selectedType: '',
       key: '',
       value: '',

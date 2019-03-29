@@ -75,6 +75,7 @@ class ListView extends Component {
             {this.props.items.map((item, idx) => (
               <li key={`idxt_${idx}`} onDragOver={() => this.onDragOver(idx)}>
                 <div
+                  style={{marginTop: '12px'}}
                   key={`idx_${idx}`}
                   className='drag'
                   draggable
@@ -83,7 +84,7 @@ class ListView extends Component {
                 >
                   <FontAwesome key={`idxj_${idx}`} name='bars' />
                 </div>
-                <span style={{paddingRight: '5px', marginTop: '2px'}}>{idx}</span>
+                <span style={{marginRight: '5px', marginTop: '12px'}}>{idx}</span>
                 <input key={`idxr_${idx}`} className='content' value={item} onChange={(e) => { this.itemChanged(e, idx) }} />
               </li>
             ))}
