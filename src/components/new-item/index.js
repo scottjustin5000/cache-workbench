@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import FontAwesome from 'react-fontawesome'
 
 import Dropdown from '../dropdown'
-import ListView from './list-view'
+// import ListView from './list-view'
+import ListEditor from '../list-editor'
 import './style.css'
 
 const Promise = require('bluebird')
@@ -18,7 +19,7 @@ class NewItemModal extends React.Component {
       saved: false,
       inerror: false,
       dataTypes: [{name: 'STRING', selected: false}, {name: 'LIST', selected: false}, {name: 'HASH', selected: false}, {name: 'ZSET', selected: false}],
-      selectedType: '',
+      selectedType: 'STRING',
       key: '',
       value: '',
       contents: '',
@@ -85,7 +86,7 @@ class NewItemModal extends React.Component {
     })
     this.setState({
       types,
-      selectedType: '',
+      selectedType: 'STRING',
       key: '',
       value: '',
       contents: '',
@@ -96,8 +97,8 @@ class NewItemModal extends React.Component {
   async addNewItem (e) {
     e.preventDefault()
     e.stopPropagation()
-    await this.props.submitItem(this.state.key, this.state.contents, this.state.selectedType)
-    this.resetState()
+    const data = (this.state.selectedType === 'STRING' || this.state.selectedType === 'HASH') ? this.state.contents : this.state.listItems
+    await this.props.submitItem(this.state.key, data, this.state.selectedType)
   }
 
   updateItems (items) {
@@ -110,9 +111,9 @@ class NewItemModal extends React.Component {
   }
 
   render () {
-    const showHideClassName = this.props.show ? 'modal display-block' : 'modal display-none'
+    // const showHideClassName = this.props.show ? 'modal display-block' : 'modal display-none'
     return (
-      <div className={showHideClassName}>
+      <div className={this.props.show ? 'modal display-block' : 'modal display-none'}>
         <section className='modal-main'>
           <div className='new-item-container'>
             <button className='close' onClick={this.onClose}>
@@ -136,27 +137,27 @@ class NewItemModal extends React.Component {
                     </div>
                   }
                   {
-                    this.state.selectedType === 'HASH' && <div style={{ display: 'flex', margin: 'auto 5px', fontSize: '10px', color: '#ffffff' }}>*valid JSON required </div>
+                    this.state.selectedType === 'HASH' && <div className='config-hash-message'>*valid JSON required </div>
                   }
                 </div>
               </fieldset>
               <fieldset>
-                <input className='key-name' onChange={this.onKeyChanged} value={this.state.key} placeholder='key' type='text' />
+                <input className='key-name' onChange={this.onKeyChanged} value={this.state.key} placeholder='key *required' type='text' />
               </fieldset>
               <fieldset>
                 <div>
                   { (!this.state.selectedType || (this.state.selectedType === 'STRING' || this.state.selectedType === 'HASH')) && <textarea value={this.state.contents} style={{ width: '98%', height: '300px', color: '#ffffff', backgroundColor: '#383838' }} onChange={this.onContentChanged} /> }
                   { (this.state.selectedType !== 'STRING' && this.state.selectedType !== 'HASH') && this.state.selectedType &&
-                  <div style={{display: 'flex'}}>
-                    <div style={{ width: '100%', overflowY: 'scroll', height: '300px' }}>
-                      <ListView items={this.state.listItems} updateItems={this.updateItems} />
+                  <div className='config-list-container'>
+                    <div className='config-list-view-wrapper'>
+                      <ListEditor items={this.state.listItems} updateItems={this.updateItems} />
                     </div>
                   </div>
                   }
                 </div>
               </fieldset>
               <fieldset>
-                <button name='submit' type='submit' onClick={this.addNewItem} data-submit='...Sending'>Submit</button>
+                <button className={`${!this.state.key ? 'configure-button-disabled' : 'configure-button'}`} title={!this.state.key ? 'Key Required' : 'Add New Item'} disabled={!this.state.key} type='submit' onClick={this.addNewItem} data-submit='...Sending'>Submit</button>
               </fieldset>
             </form>
           </div>

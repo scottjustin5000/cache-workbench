@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import FontAwesome from 'react-fontawesome'
 
 import './style.css'
-class ListView extends Component {
+
+class ListEditor extends Component {
   constructor (props) {
     super(props)
     this.onDragOver = this.onDragOver.bind(this)
@@ -84,8 +85,9 @@ class ListView extends Component {
                 >
                   <FontAwesome key={`idxj_${idx}`} name='bars' />
                 </div>
-                <span className='list-tem-index'>{idx}</span>
+                <span className='list-item-index'>{idx}</span>
                 <input key={`idxr_${idx}`} className='content' value={item} onChange={(e) => { this.itemChanged(e, idx) }} />
+                <button className='delete-item-btn' title='Delete Item'><FontAwesome name='trash-o' /></button>
               </li>
             ))}
           </ul>
@@ -96,8 +98,8 @@ class ListView extends Component {
   }
 }
 
-ListView.propTypes = {
+ListEditor.propTypes = {
   items: PropTypes.array,
   updateItems: PropTypes.func
 }
-export default ListView
+export default ListEditor

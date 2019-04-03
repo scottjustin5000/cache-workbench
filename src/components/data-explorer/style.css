@@ -143,3 +143,12 @@ margin-top:-30px
   border-color: #9370DB;
   box-shadow: 0 0 5px #9370DB;
 }
+
+.list-editor-container {
+  display: flex;
+}
+.list-editor-view-wrapper {
+  width: 100%;
+  overflow-y: scroll;
+  min-height: 500px;
+}

@@ -66,7 +66,7 @@ fieldset {
 	border:1px solid #AAA;
 }
 
-.configure button[type="submit"] {
+.configure-button {
 	cursor:pointer;
 	width:100%;
 	border:none;
@@ -76,15 +76,28 @@ fieldset {
 	padding:10px;
 	font-size:15px;
 }
-
-.configure button[type="submit"]:hover {
+/*
+Need to figure out how to hadnele disabled
+*/
+.configure-button:hover {
 	background:#09C;
 	-webkit-transition:background 0.3s ease-in-out;
 	-moz-transition:background 0.3s ease-in-out;
 	transition:background-color 0.3s ease-in-out;
 }
 
-.configure button[type="submit"]:active { 
+.configure-button-disabled {
+  background:#9370DB;
+  cursor: not-allowed;
+	width:100%;
+	border:none;
+	color:#FFF;
+	margin:0 0 5px;
+	padding:10px;
+	font-size:15px;
+}
+
+.configure-button:active { 
   box-shadow:inset 0 1px 3px rgba(0, 0, 0, 0.5); 
 }
 
@@ -110,10 +123,29 @@ fieldset {
   top: 10px;
   right: 10px;
 }
+
 .key-name {
   width:80%;
   color:#ffffff;
   line-height:45px;
   padding-left:35px;
+}
+
+.config-list-container {
+  display: flex;
+}
+
+.config-list-view-wrapper {
+  width: 100%;
+  overflow-y: scroll;
+  height: 300px;
+  border: solid #ffffff 1px
+}
+
+.config-hash-message {
+  display: flex; 
+  margin: auto 5px; 
+  font-size: 10px; 
+  color: #ffffff;
 }
 

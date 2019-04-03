@@ -1,3 +1,4 @@
+
 .list-view {
   font-family: sans-serif;
   font-size: 10px;
@@ -9,7 +10,7 @@
 
 .list-view main {
   background-color: #383838;
-  color: #ffffff;
+  color: #fff;
   padding: 10px;
   width:100%;
   margin:5px;
@@ -47,7 +48,7 @@
   line-height: 30px;
   color:white;
   width:100%;
-  border: 1px solid #ffffff
+  border: 1px solid #ffffff;
 }
 
 .list-view-header {
@@ -56,7 +57,12 @@
   justify-content: flex-end
 }
 
-.list-tem-index {
+.list-item-index {
   margin-right: 10px;
   margin-top: 12px;
+}
+
+.delete-item-btn {
+  margin-top: 10px;
+  margin-left: 5px;
 }

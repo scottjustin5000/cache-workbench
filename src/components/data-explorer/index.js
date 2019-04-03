@@ -6,6 +6,7 @@ import ResizablePanels from '../resize-panel'
 import ListView from '../keylist'
 import ListItem from '../keylist/list-item'
 import NewItemModal from '../new-item'
+import ListEditor from '../list-editor'
 
 import './style.css'
 
@@ -22,6 +23,8 @@ class DataExplorer extends Component {
       items: [],
       hasMore: false,
       contents: '',
+      listItems: [],
+      selectedType: 'STRING',
       left: 300,
       showModal: false,
       controlsEnabled: false
@@ -41,6 +44,7 @@ class DataExplorer extends Component {
     this.closeModal = this.closeModal.bind(this)
     this.purge = this.purge.bind(this)
     this.addItem = this.addItem.bind(this)
+    this.updateItems = this.updateItems.bind(this)
   }
 
   openAddItemModal () {
@@ -118,15 +122,28 @@ class DataExplorer extends Component {
     }
   }
 
+  updateItems (items) {
+    this.setState({listItems: items})
+  }
+
   handleResize (v) {
     this.setState({left: v})
   }
 
-  async onKeySelected (key) {
-    const contents = await this.props.cacheClient.getByKey(key)
-    this.setState({
-      contents
-    })
+  async onKeySelected (key, type) {
+    const formattedType = type.toUpperCase()
+    const data = await this.props.cacheClient.getByKey(key)
+    if (formattedType === 'LIST' || formattedType === 'ZSET') {
+      this.setState({
+        listItems: data,
+        selectedType: formattedType
+      })
+    } else {
+      this.setState({
+        contents: data,
+        selectedType: formattedType
+      })
+    }
   }
 
   async deleteItem (key) {
@@ -208,16 +225,29 @@ class DataExplorer extends Component {
           <div>
             <div className='editor-panel'>
               <div className='editor-panel-inner'>
-                <div className='editor-control-item' onClick={this.expand}><FontAwesome name='expand' />  </div>
-                <div className='editor-control-item' onClick={this.compress}><FontAwesome name='compress' />  </div>
+                { this.state.selectedType === 'STRING' &&
+                <div className='editor-control-item'>
+                  <div className='editor-control-item' onClick={this.expand}><FontAwesome name='expand' />  </div>
+                  <div className='editor-control-item' onClick={this.compress}><FontAwesome name='compress' />  </div>
+                </div>
+                }
                 <div className='editor-control-item' ><FontAwesome name='save' />  </div>
                 <div className='editor-control-item' ><FontAwesome name='trash-o' /> </div>
               </div>
             </div>
-
+            { (this.state.selectedType === 'STRING' || this.state.selectedType === 'HASH') &&
             <div>
               <textarea className='item-editor' onChange={() => {}} value={this.state.contents} />
             </div>
+            }
+            { (this.state.selectedType === 'LIST' || this.state.selectedType === 'ZSET') &&
+            <div className='list-editor-container'>
+              <div className='list-editor-view-wrapper'>
+                <ListEditor items={this.state.listItems} updateItems={this.updateItems} />
+              </div>
+            </div>
+            }
+
           </div>
         </ResizablePanels>
         <div> <NewItemModal submitItem={this.addItem} show={this.state.showModal} handleClose={this.closeModal} /></div>
