@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import FontAwesome from 'react-fontawesome'
 
 import Dropdown from '../dropdown'
-// import ListView from './list-view'
 import ListEditor from '../list-editor'
 import './style.css'
 
