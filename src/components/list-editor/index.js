@@ -73,7 +73,7 @@ class ListEditor extends Component {
             </div>
           </div>
           <ul>
-            {this.props.items.map((item, idx) => (
+            {(this.props.items || []).map((item, idx) => (
               <li key={`idxt_${idx}`} onDragOver={() => this.onDragOver(idx)}>
                 <div
                   style={{marginTop: '12px'}}
@@ -87,7 +87,7 @@ class ListEditor extends Component {
                 </div>
                 <span className='list-item-index'>{idx}</span>
                 <input key={`idxr_${idx}`} className='content' value={item} onChange={(e) => { this.itemChanged(e, idx) }} />
-                <button className='delete-item-btn' title='Delete Item'><FontAwesome name='trash-o' /></button>
+                <button className='delete-item-btn' onClick={(e) => { this.deleteItem(e, idx) }} title='Delete Item'><FontAwesome name='trash-o' /></button>
               </li>
             ))}
           </ul>

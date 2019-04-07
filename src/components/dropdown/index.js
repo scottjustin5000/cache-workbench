@@ -23,6 +23,12 @@ class Dropdown extends Component {
         window.removeEventListener('click', this.close)
       }
     }, 0)
+
+    if (this.state.headerTitle !== this.props.title && this.props.list && this.props.list.length && this.props.list.every(e => !e.selectItem)) {
+      this.setState({
+        headerTitle: this.props.title
+      })
+    }
   }
 
   componentWillUnmount () {
@@ -46,6 +52,12 @@ class Dropdown extends Component {
     this.setState(prevState => ({
       listOpen: !prevState.listOpen
     }))
+  }
+  resetHeader () {
+    this.state = {
+      listOpen: false,
+      headerTitle: this.props.title
+    }
   }
 
   render () {

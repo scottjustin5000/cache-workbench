@@ -48,7 +48,6 @@ background-color: #383838;
 }
 .search-input::-moz-placeholder {
   color: #ffffff;
-
 }
 
 .modal {
@@ -132,11 +131,6 @@ margin-top:-30px
   background-color:#383838;
   color:#ffffff;
   border:0;
-  /* background: url(http://i.imgur.com/2cOaJ.png);
-  background-attachment: local;
-  background-repeat: no-repeat;
-  padding-left: 35px;
-  padding-top: 10px; */
 }
 .item-editor:focus { 
   outline: none !important;

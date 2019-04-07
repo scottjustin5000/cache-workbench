@@ -65,4 +65,5 @@
 .delete-item-btn {
   margin-top: 10px;
   margin-left: 5px;
+  cursor: pointer;
 }

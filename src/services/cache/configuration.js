@@ -1,9 +1,7 @@
 const keytar = window.remote ? window.remote.require('keytar') : require('keytar')
-// import {ipcRenderer} from 'electron'
-// const ipcRenderer = window.remote ? window.remote.require('electron').ipcRenderer : {}
+
 const findPassword = (item) => {
-  return undefined
-  // keytar.getPassword('cache-workbench', item.name)
+  return keytar.getPassword('cache-workbench', item.name)
 }
 
 const getDbs = () => {

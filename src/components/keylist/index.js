@@ -60,7 +60,6 @@ class ScrollPanel extends Component {
     if (this.state.scrolling) return
 
     const atBottom = this.isElementAtBottom(target)
-
     if (atBottom && this.props.hasMore) {
       this.setState({ scrolling: true, showLoader: true })
       this.props.next()

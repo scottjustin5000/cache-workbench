@@ -4,6 +4,8 @@ import FontAwesome from 'react-fontawesome'
 
 import Dropdown from '../dropdown'
 import ListEditor from '../list-editor'
+import CollectionTypes from '../../collection-types'
+
 import './style.css'
 
 const Promise = require('bluebird')
@@ -17,12 +19,13 @@ class NewItemModal extends React.Component {
       loading: false,
       saved: false,
       inerror: false,
-      dataTypes: [{name: 'STRING', selected: false}, {name: 'LIST', selected: false}, {name: 'HASH', selected: false}, {name: 'ZSET', selected: false}],
-      selectedType: 'STRING',
+      dataTypes: [{name: CollectionTypes.STRING, selected: false}, {name: CollectionTypes.LIST, selected: false}, {name: CollectionTypes.HASH, selected: false}, {name: CollectionTypes.ZSET, selected: false}],
+      selectedType: '',
       key: '',
       value: '',
       contents: '',
-      listItems: []
+      listItems: [],
+      title: 'Data Type'
     }
     this.addNewItem = this.addNewItem.bind(this)
     this.dataTypeSelected = this.dataTypeSelected.bind(this)
@@ -85,18 +88,19 @@ class NewItemModal extends React.Component {
     })
     this.setState({
       types,
-      selectedType: 'STRING',
+      selectedType: '',
       key: '',
       value: '',
       contents: '',
-      listItems: []
+      listItems: [],
+      title: 'Data Type'
     })
   }
 
   async addNewItem (e) {
     e.preventDefault()
     e.stopPropagation()
-    const data = (this.state.selectedType === 'STRING' || this.state.selectedType === 'HASH') ? this.state.contents : this.state.listItems
+    const data = (this.state.selectedType === CollectionTypes.STRING || this.state.selectedType === CollectionTypes.HASH) ? this.state.contents : this.state.listItems
     await this.props.submitItem(this.state.key, data, this.state.selectedType)
   }
 
@@ -110,7 +114,6 @@ class NewItemModal extends React.Component {
   }
 
   render () {
-    // const showHideClassName = this.props.show ? 'modal display-block' : 'modal display-none'
     return (
       <div className={this.props.show ? 'modal display-block' : 'modal display-none'}>
         <section className='modal-main'>
@@ -130,13 +133,13 @@ class NewItemModal extends React.Component {
                     />
                   </div>
                   {
-                    this.state.selectedType === 'STRING' && <div style={{display: 'flex', margin: 'auto 5px'}}>
+                    this.state.selectedType === CollectionTypes.STRING && <div style={{display: 'flex', margin: 'auto 5px'}}>
                       <div className='editor-control-item' onClick={this.compress}><FontAwesome name='compress' style={{color: '#ffffff'}} />  </div>
                       <div className='editor-control-item' onClick={this.expand}><FontAwesome name='expand' style={{color: '#ffffff'}} />  </div>
                     </div>
                   }
                   {
-                    this.state.selectedType === 'HASH' && <div className='config-hash-message'>*valid JSON required </div>
+                    this.state.selectedType === CollectionTypes.HASH && <div className='config-hash-message'>*valid JSON required </div>
                   }
                 </div>
               </fieldset>
@@ -145,8 +148,8 @@ class NewItemModal extends React.Component {
               </fieldset>
               <fieldset>
                 <div>
-                  { (!this.state.selectedType || (this.state.selectedType === 'STRING' || this.state.selectedType === 'HASH')) && <textarea value={this.state.contents} style={{ width: '98%', height: '300px', color: '#ffffff', backgroundColor: '#383838' }} onChange={this.onContentChanged} /> }
-                  { (this.state.selectedType !== 'STRING' && this.state.selectedType !== 'HASH') && this.state.selectedType &&
+                  { (!this.state.selectedType || (this.state.selectedType === CollectionTypes.STRING || this.state.selectedType === CollectionTypes.HASH)) && <textarea value={this.state.contents} style={{ width: '98%', height: '300px', color: '#ffffff', backgroundColor: '#383838' }} onChange={this.onContentChanged} /> }
+                  { (this.state.selectedType !== CollectionTypes.STRING && this.state.selectedType !== CollectionTypes.HASH) && this.state.selectedType &&
                   <div className='config-list-container'>
                     <div className='config-list-view-wrapper'>
                       <ListEditor items={this.state.listItems} updateItems={this.updateItems} />

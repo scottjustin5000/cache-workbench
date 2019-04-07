@@ -8,6 +8,8 @@ import ListItem from '../keylist/list-item'
 import NewItemModal from '../new-item'
 import ListEditor from '../list-editor'
 
+import CollectionTypes from '../../collection-types'
+
 import './style.css'
 
 const Promise = require('bluebird')
@@ -45,6 +47,9 @@ class DataExplorer extends Component {
     this.purge = this.purge.bind(this)
     this.addItem = this.addItem.bind(this)
     this.updateItems = this.updateItems.bind(this)
+    this.updateData = this.updateData.bind(this)
+    this.getKeys = this.getKeys.bind(this)
+    this.contentsChanged = this.contentsChanged.bind(this)
   }
 
   openAddItemModal () {
@@ -59,9 +64,33 @@ class DataExplorer extends Component {
     })
   }
 
+  handleResize (v) {
+    this.setState({left: v})
+  }
+
+  checkJson (contents) {
+    let json
+    try {
+      json = JSON.parse(contents)
+    } catch (err) {}
+    if (json) {
+      json = JSON.stringify(json, null, 4)
+    } else {
+      json = contents
+    }
+    return json
+  }
+
+  componentDidUpdate (prevProps) {
+    if (prevProps.cacheClient !== this.props.cacheClient) {
+      this.getKeys()
+    }
+  }
+
   async addItem (key, item, type) {
     await this.props.cacheClient.addItem(key, item, type)
     await this.closeModal()
+    this.getKeys()
   }
 
   async purge () {
@@ -72,14 +101,6 @@ class DataExplorer extends Component {
       // need to notify
       console.log(err)
     }
-  }
-
-  toggleSelected (id, key) {
-    let temp = JSON.parse(JSON.stringify(this.state[key]))
-    temp[id].selected = !temp[id].selected
-    this.setState({
-      [key]: temp
-    })
   }
 
   getKeys () {
@@ -97,16 +118,10 @@ class DataExplorer extends Component {
       })
   }
 
-  componentDidUpdate (prevProps) {
-    if (prevProps.cacheClient !== this.props.cacheClient) {
-      this.getKeys()
-    }
-  }
-
-  keySearch (value) {
+  keySearch (evt) {
     if (!this.keys || !this.keys.length) return
 
-    const filtered = this.keys.filter(k => k.key.indexOf(value) > -1)
+    const filtered = this.keys.filter(k => k.key.indexOf(evt.target.value) > -1)
 
     this.setState({
       items: filtered
@@ -117,45 +132,65 @@ class DataExplorer extends Component {
     if (this.state.items.length < this.keys.length) {
       this.setState({
         items: this.state.items.concat([this.keys[this.state.items.length]]),
-        hasMore: (this.state.items.length + 12 <= this.keys.length)
+        hasMore: (this.state.items.length < this.keys.length)
       })
     }
   }
 
-  updateItems (items) {
-    this.setState({listItems: items})
-  }
-
-  handleResize (v) {
-    this.setState({left: v})
-  }
-
   async onKeySelected (key, type) {
     const formattedType = type.toUpperCase()
-    const data = await this.props.cacheClient.getByKey(key)
-    if (formattedType === 'LIST' || formattedType === 'ZSET') {
+    const data = await this.props.cacheClient.getByKey(key, formattedType)
+    if (formattedType === CollectionTypes.LIST || formattedType === CollectionTypes.ZSET) {
       this.setState({
-        listItems: data,
+        selectedKey: key,
+        listItems: data || [],
         selectedType: formattedType
       })
     } else {
       this.setState({
-        contents: data,
+        selectedKey: key,
+        contents: this.checkJson(data),
         selectedType: formattedType
       })
     }
   }
 
   async deleteItem (key) {
-    await this.props.cacheClient.remove(key)
+    await this.props.cacheClient.remove(key || this.selectedKey)
+
     this.props.cacheClient.getKeysAndTypes()
       .then((keys) => {
         this.keys = keys
-        this.setState({
-          items: keys.slice(0, 12),
-          hasMore: keys.length > 12
-        })
+        if (this.state.selectedKey === key) {
+          this.setState({
+            selectedKey: '',
+            contents: '',
+            listItems: [],
+            selectedType: CollectionTypes.STRING,
+            items: keys.slice(0, 12),
+            hasMore: keys.length > 12
+          })
+        } else {
+          this.setState({
+            items: keys.slice(0, 12),
+            hasMore: keys.length > 12
+          })
+        }
       })
+  }
+
+  updateItems (items) {
+    this.setState({listItems: items})
+  }
+
+  async updateData () {
+    const data = (this.state.selectedType === CollectionTypes.LIST || this.state.selectedType === CollectionTypes.ZSET) ? this.state.listItems : this.state.contents
+    await this.props.cacheClient.updateItem(this.state.selectedKey, data, this.state.selectedType)
+    this.setState({
+      selectedKey: '',
+      listItems: undefined,
+      selectedType: undefined
+    })
   }
 
   expand () {
@@ -178,10 +213,16 @@ class DataExplorer extends Component {
       })
   }
 
+  contentsChanged (e) {
+    const json = this.checkJson(e.target.value)
+    this.setState({
+      contents: json
+    })
+  }
+
   render () {
     return (
       <div className='data-explorer-wrapper'>
-
         <ResizablePanels onResizing={this.handleResize}>
           <div>
             <div className='pattern-input' style={{marginTop: '-10'}}>
@@ -191,16 +232,14 @@ class DataExplorer extends Component {
                 className='search-input'
                 placeholder='key name'
                 value={this.state.pattern}
-                onChange={evt => {
-                  this.keySearch(evt.target.value)
-                }}
+                onChange={this.keySearch}
               />
             </div>
             <div>
               <div className='server-controls'>
                 <button title='add item' disabled={!this.state.controlsEnabled} onClick={this.openAddItemModal}><FontAwesome name='plus' /></button>
-                <button title='reload keys' disabled={!this.state.controlsEnabled}><FontAwesome name='refresh' /></button>
-                <button title='purge cache' disabled={!this.state.controlsEnabled}><FontAwesome name='trash-o' /></button>
+                <button title='reload keys' disabled={!this.state.controlsEnabled} onClick={this.getKeys}><FontAwesome name='refresh' /></button>
+                <button title='purge cache' disabled={!this.state.controlsEnabled} onClick={this.purge}><FontAwesome name='trash-o' /></button>
               </div>
             </div>
             <div>
@@ -225,29 +264,28 @@ class DataExplorer extends Component {
           <div>
             <div className='editor-panel'>
               <div className='editor-panel-inner'>
-                { this.state.selectedType === 'STRING' &&
+                { this.state.selectedType === CollectionTypes.STRING &&
                 <div className='editor-control-item'>
                   <div className='editor-control-item' onClick={this.expand}><FontAwesome name='expand' />  </div>
                   <div className='editor-control-item' onClick={this.compress}><FontAwesome name='compress' />  </div>
                 </div>
                 }
-                <div className='editor-control-item' ><FontAwesome name='save' />  </div>
-                <div className='editor-control-item' ><FontAwesome name='trash-o' /> </div>
+                <div onClick={this.updateData} className='editor-control-item' ><FontAwesome name='save' />  </div>
+                <div onClick={this.deleteItem} className='editor-control-item' ><FontAwesome name='trash-o' /> </div>
               </div>
             </div>
-            { (this.state.selectedType === 'STRING' || this.state.selectedType === 'HASH') &&
+            { (this.state.selectedType === CollectionTypes.STRING || this.state.selectedType === CollectionTypes.HASH) &&
             <div>
-              <textarea className='item-editor' onChange={() => {}} value={this.state.contents} />
+              <textarea className='item-editor' onChange={this.contentsChanged} value={this.state.contents} />
             </div>
             }
-            { (this.state.selectedType === 'LIST' || this.state.selectedType === 'ZSET') &&
+            { (this.state.selectedType === CollectionTypes.LIST || this.state.selectedType === CollectionTypes.ZSET) &&
             <div className='list-editor-container'>
               <div className='list-editor-view-wrapper'>
                 <ListEditor items={this.state.listItems} updateItems={this.updateItems} />
               </div>
             </div>
             }
-
           </div>
         </ResizablePanels>
         <div> <NewItemModal submitItem={this.addItem} show={this.state.showModal} handleClose={this.closeModal} /></div>
