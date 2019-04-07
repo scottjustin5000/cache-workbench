@@ -6,7 +6,6 @@
   "main": "public/electron.js",
   "dependencies": {
     "bluebird": "^3.5.3",
-    "electron-builder": "^20.18.0",
     "font-awesome": "^4.7.0",
     "hiredis": "^0.5.0",
     "keytar": "^4.4.1",
@@ -21,11 +20,12 @@
     "react-start": "react-scripts start",
     "electron-start": "ELECTRON_DEV=1 electron .",
     "start": "concurrently \"npm run react-start\" \"wait-on http://localhost:3000/ && npm run electron-start\"",
-    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "pack": "electron-builder --dir",
-    "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always"
+    "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always",
+    "postinstall": "electron-builder install-app-deps",
+    "build": "react-scripts build && electron-builder --dir"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -39,9 +39,11 @@
   "devDependencies": {
     "concurrently": "^4.1.0",
     "electron": "^4.0.4",
+    "electron-builder": "^20.18.0",
     "electron-rebuild": "^1.8.4",
     "install": "^0.12.2",
     "npm": "^6.8.0",
+    "typescript": "^3.4.2",
     "wait-on": "^3.2.0"
   }
 }
