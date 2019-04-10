@@ -12,6 +12,7 @@ class Dropdown extends Component {
       headerTitle: this.props.title
     }
     this.close = this.close.bind(this)
+    this.onDelete = this.onDelete.bind(this)
   }
 
   componentDidUpdate () {
@@ -54,10 +55,15 @@ class Dropdown extends Component {
     }))
   }
   resetHeader () {
-    this.state = {
+    this.setState({
       listOpen: false,
       headerTitle: this.props.title
-    }
+    })
+  }
+
+  onDelete (e, item) {
+    e.stopPropagation()
+    this.props.onItemDelete(item)
   }
 
   render () {
@@ -79,7 +85,7 @@ class Dropdown extends Component {
                 <div className='item-name'>{item.name} {item.selected && <FontAwesome name='check' style={{color: '#fff'}} />}</div>
                 { this.props.showControls && <div className='item-control-wrapper'>
                   <div className='item-control-button'><FontAwesome name='edit' style={{color: '#ffffff'}} /> </div>
-                  <div className='item-control-button'><FontAwesome name='trash-o' style={{color: '#ffffff'}} /></div>
+                  <div className='item-control-button' onClick={(e) => this.onDelete(e, item)}><FontAwesome name='trash-o' style={{color: '#ffffff'}} /></div>
                 </div>
                 }
               </div>
@@ -91,7 +97,8 @@ class Dropdown extends Component {
   }
 }
 Dropdown.propTypes = {
+  onItemSelected: PropTypes.func,
   onEdit: PropTypes.func,
-  onDelete: PropTypes.func
+  onItemDelete: PropTypes.func
 }
 export default Dropdown

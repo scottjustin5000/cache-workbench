@@ -71,7 +71,7 @@ class ServerConfigurator extends React.Component {
                 <input value={this.state.host} onChange={this.onHostChange} placeholder='Host' type='text' tabIndex='2' required />
               </fieldset>
               <fieldset>
-                <input value={this.state.port} onChange={this.onPortChange} placeholder='Port' type='number' tabIndex='3' required />
+                <input value={this.state.port} onChange={this.onPortChange} placeholder='Port' type='text' tabIndex='3' required />
               </fieldset>
               <fieldset>
                 <input value={this.state.password} onChange={this.onPasswordChange} placeholder='Password' type='password' tabIndex='4' />

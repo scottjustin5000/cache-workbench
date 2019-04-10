@@ -17,6 +17,12 @@ const loadDbs = () => {
   })
 }
 
+const deleteConnection = (name) => {
+  const dbs = getDbs()
+  const updated = dbs.filter(d => d.name !== name)
+  window.localStorage.setItem('dbs', JSON.stringify(updated))
+}
+
 const saveDb = (settings) => {
   if (settings.password) {
     const password = settings.password
@@ -51,5 +57,6 @@ const editDb = (settings) => {
 export default {
   loadDbs,
   saveDb,
-  editDb
+  editDb,
+  deleteConnection
 }

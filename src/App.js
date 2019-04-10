@@ -25,13 +25,19 @@ class App extends Component {
     this.onDbSelected = this.onDbSelected.bind(this)
     this.newServer = this.newServer.bind(this)
     this.hideModal = this.hideModal.bind(this)
+    this.deleteConnection = this.deleteConnection.bind(this)
   }
-  componentDidMount () {
-    window.scrollTo(0, 0)
+
+  resetDbs () {
     const dbs = CacheConfiguration.loadDbs()
     this.setState({
       dbs
     })
+  }
+
+  componentDidMount () {
+    window.scrollTo(0, 0)
+    this.resetDbs()
   }
 
   handleChange (e) {
@@ -45,8 +51,11 @@ class App extends Component {
       showModal: true
     })
   }
+
   hideModal () {
+    const dbs = CacheConfiguration.loadDbs()
     this.setState({
+      dbs,
       showModal: false
     })
   }
@@ -67,14 +76,12 @@ class App extends Component {
     })
   }
 
+  deleteConnection (item) {
+    CacheConfiguration.deleteConnection(item.name)
+    this.resetDbs()
+  }
+
   render () {
-    /*
-    if (this.state.mode !== 'Data') {
-      return (
-        <div>Analyze</div>
-      )
-    }
-    */
     return (
       <div className='app'>
         <div className='data-explorer-top'>
@@ -85,6 +92,7 @@ class App extends Component {
                 title='Cache'
                 list={this.state.dbs}
                 onItemSelected={this.onDbSelected}
+                onItemDelete={this.deleteConnection}
               />
               <a href='#' onClick={this.newServer} className='btn btn-4'><span>New <FontAwesome name='bolt' /></span></a>
             </div>
