@@ -19,13 +19,15 @@ class App extends Component {
       left: 300,
       dbs: [],
       showModal: false,
-      cacheClient: null
+      cacheClient: null,
+      selectedDb: {}
     }
     this.handleChange = this.handleChange.bind(this)
     this.onDbSelected = this.onDbSelected.bind(this)
     this.newServer = this.newServer.bind(this)
     this.hideModal = this.hideModal.bind(this)
     this.deleteConnection = this.deleteConnection.bind(this)
+    this.editConnection = this.editConnection.bind(this)
   }
 
   resetDbs () {
@@ -81,6 +83,14 @@ class App extends Component {
     this.resetDbs()
   }
 
+  editConnection (item) {
+    const connection = CacheConfiguration.getConnection(item.name)
+    this.setState({
+      selectedDb: connection,
+      showModal: true
+    })
+  }
+
   render () {
     return (
       <div className='app'>
@@ -93,6 +103,7 @@ class App extends Component {
                 list={this.state.dbs}
                 onItemSelected={this.onDbSelected}
                 onItemDelete={this.deleteConnection}
+                onItemEdit={this.editConnection}
               />
               <a href='#' onClick={this.newServer} className='btn btn-4'><span>New <FontAwesome name='bolt' /></span></a>
             </div>
@@ -108,7 +119,7 @@ class App extends Component {
           </div>
         </div>
         <DataExplorer cacheClient={this.state.cacheClient} />
-        <div> <Modal show={this.state.showModal} handleClose={this.hideModal} /></div>
+        <div> <Modal show={this.state.showModal} handleClose={this.hideModal} connection={this.state.selectedDb} /></div>
       </div>
     )
   }

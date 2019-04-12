@@ -1,4 +1,6 @@
+import CollectionTypes from '../../collection-types'
 const redis = window.remote ? window.remote.require('redis') : require('redis')
+
 class Cache {
   constructor (connection) {
     this.connection = connection
@@ -7,7 +9,6 @@ class Cache {
 
   getClient () {
     if (this.client) return this.client
-    // return this.client
     const options = Object.assign((this.connection.options || {}), {no_ready_check: true})
     try {
       this.client = redis.createClient(this.connection.port, this.connection.host, options)
@@ -69,12 +70,66 @@ class Cache {
     return Promise.resolve(keysAndTypes)
   }
 
-  getByKey (key) {
+  getSet (key) {
+    return new Promise((resolve, reject) => {
+      this.getClient().zrevrange(key, 0, -1, (err, reply) => {
+        if (err) {
+          console.log(err)
+          return resolve()
+        }
+        return resolve(reply)
+      })
+    })
+  }
+
+  getList (key) {
+    return new Promise((resolve, reject) => {
+      this.getClient().lrange(key, 0, -1, (err, reply) => {
+        if (err) {
+          console.log(err)
+          return resolve()
+        }
+        return resolve(reply)
+      })
+    })
+  }
+
+  getHash (key) {
+    return new Promise((resolve, reject) => {
+      this.getClient().hgetall(key, (err, reply) => {
+        if (err) {
+          console.log(err)
+          return resolve()
+        }
+        let str = []
+        Object.keys(reply).forEach(k => {
+          // if (reply[k] && reply[k].charAt(0) === '{')
+          try {
+            JSON.parse(reply[k])
+            str.push(`"${k}":${reply[k]}`)
+          } catch (e) {
+            str.push(`"${k}":"${reply[k]}"`)
+          }
+        })
+        return resolve(`{ ${str.join(',')} }`)
+      })
+    })
+  }
+
+  getByKey (key, type) {
+    if (type === CollectionTypes.ZSET) {
+      return this.getSet(key)
+    }
+    if (type === CollectionTypes.LIST) {
+      return this.getList(key)
+    }
+    if (type === CollectionTypes.HASH) {
+      return this.getHash(key)
+    }
     return new Promise((resolve, reject) => {
       this.getClient().get(key, (err, reply) => {
         if (err) {
           console.log(err)
-          // don't want to fail b/c cache errors
           return resolve()
         }
         return resolve(reply)
@@ -100,8 +155,7 @@ class Cache {
         if (typeof value === 'object') {
           value = JSON.stringify(value)
         }
-        const result = await this.addHashItem(key, prop, value)
-        console.log(result)
+        await this.addHashItem(key, prop, value)
       }
       return Promise.resolve()
     } catch (err) {
@@ -110,21 +164,33 @@ class Cache {
   }
 
   rpush (key, items) {
-    if (!items || Array.isArray(items) || items.length) { items.unshift(key) }
+    if (items && Array.isArray(items) && items.length) { items.unshift(key) }
     return new Promise((resolve, reject) => {
       this.getClient().rpush(items, (err, res) => {
         if (err) return reject(err)
-        return res()
+        return resolve(res)
       })
     })
   }
 
   zadd (key, items) {
-    if (!items || Array.isArray(items) || items.length) { items.unshift(key) }
+    let indexedSet = []
+    if (items && Array.isArray(items) && items.length) {
+      let index = 1
+      items.forEach((itm, indx) => {
+        indexedSet.push(index)
+        indexedSet.push(itm)
+        index++
+      })
+      indexedSet.unshift(key)
+    } else {
+      indexedSet = [key]
+    }
+    console.log(indexedSet)
     return new Promise((resolve, reject) => {
-      this.getClient().zadd(items, (err, res) => {
+      this.getClient().zadd(indexedSet, (err, res) => {
         if (err) return reject(err)
-        return res()
+        return resolve(res)
       })
     })
   }
@@ -133,23 +199,49 @@ class Cache {
     return new Promise((resolve, reject) => {
       this.getClient().set(key, item, (err, res) => {
         if (err) return reject(err)
-        return res()
+        return resolve()
       })
     })
   }
 
   addItem (key, item, type) {
-    console.log('ADD T')
-    if (type === 'STRING') {
-      return this.addString(key, item)
-    } else if (type === 'HASH') {
-      return this.addHash(key, item)
-    } else if (type === 'LIST') {
-      return this.rpush(key, item)
-    } else if (type === 'ZSET') {
-      return this.zadd(key, item)
+    switch (type) {
+      case CollectionTypes.STRING:
+        return this.addString(key, item)
+      case CollectionTypes.HASH:
+        return this.addHash(key, item)
+      case CollectionTypes.LIST:
+        return this.rpush(key, item)
+      case CollectionTypes.ZSET:
+        return this.zadd(key, item)
+      default:
+        return Promise.resolve()
     }
-    return Promise.resolve()
+  }
+
+  async updateList (key, item) {
+    await this.remove(key)
+    return this.rpush(key, item)
+  }
+
+  async updateSet (key, item) {
+    await this.remove(key)
+    return this.zadd(key, item)
+  }
+
+  updateItem (key, item, type) {
+    switch (type) {
+      case CollectionTypes.STRING:
+        return this.addString(key, item)
+      case CollectionTypes.HASH:
+        return this.addHash(key, item)
+      case CollectionTypes.LIST:
+        return this.updateList(key, item)
+      case CollectionTypes.ZSET:
+        return this.updateSet(key, item)
+      default:
+        return Promise.resolve()
+    }
   }
 }
 

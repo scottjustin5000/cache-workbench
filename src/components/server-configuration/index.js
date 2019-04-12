@@ -6,14 +6,15 @@ import CacheConfiguration from '../../services/cache/configuration'
 class ServerConfigurator extends React.Component {
   constructor (props) {
     super(props)
+    const selectedDb = props.connection || {}
     this.state = {
       loading: false,
       saved: false,
       inerror: false,
-      name: props.name || '',
-      host: props.host || '',
-      port: props.port,
-      password: props.password || ''
+      name: selectedDb.name || '',
+      host: selectedDb.host || '',
+      port: selectedDb.port,
+      password: selectedDb.password || ''
     }
     this.saveConfiguration = this.saveConfiguration.bind(this)
     this.onNameChange = this.onNameChange.bind(this)
@@ -45,6 +46,17 @@ class ServerConfigurator extends React.Component {
     })
   }
 
+  componentDidUpdate (prevProps) {
+    if (this.props.connection && Object.keys(this.props.connection).length && prevProps.connection !== this.props.connection) {
+      this.setState({
+        name: this.props.connection.name,
+        host: this.props.connection.host,
+        port: this.props.connection.port,
+        password: this.props.connection.password || ''
+      })
+    }
+  }
+
   saveConfiguration (e) {
     e.preventDefault()
     e.stopPropagation()
@@ -65,16 +77,16 @@ class ServerConfigurator extends React.Component {
               <h3>Connection Info</h3>
               <h4>configure and connect to your redis server</h4>
               <fieldset>
-                <input value={this.state.name} onChange={this.onNameChange} placeholder='Connection Name' type='text' tabIndex='1' required autoFocus />
+                <input value={this.state.name} onChange={this.onNameChange} placeholder='Connection Name' type='text' required autoFocus />
               </fieldset>
               <fieldset>
-                <input value={this.state.host} onChange={this.onHostChange} placeholder='Host' type='text' tabIndex='2' required />
+                <input value={this.state.host} onChange={this.onHostChange} placeholder='Host' type='text' required />
               </fieldset>
               <fieldset>
-                <input value={this.state.port} onChange={this.onPortChange} placeholder='Port' type='text' tabIndex='3' required />
+                <input value={this.state.port} onChange={this.onPortChange} placeholder='Port' type='text' required />
               </fieldset>
               <fieldset>
-                <input value={this.state.password} onChange={this.onPasswordChange} placeholder='Password' type='password' tabIndex='4' />
+                <input value={this.state.password} onChange={this.onPasswordChange} placeholder='Password' type='password' />
               </fieldset>
               <fieldset>
                 <button name='submit' type='submit' onClick={this.saveConfiguration} id='contact-submit' data-submit='...Sending'>Submit</button>

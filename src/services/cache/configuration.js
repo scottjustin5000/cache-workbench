@@ -9,6 +9,11 @@ const getDbs = () => {
   return data ? JSON.parse(data) : []
 }
 
+const getConnection = (name) => {
+  const dbs = getDbs() || []
+  return dbs.find(d => d.name !== name)
+}
+
 const loadDbs = () => {
   const dbs = getDbs()
   return dbs.map(d => {
@@ -58,5 +63,6 @@ export default {
   loadDbs,
   saveDb,
   editDb,
-  deleteConnection
+  deleteConnection,
+  getConnection
 }
