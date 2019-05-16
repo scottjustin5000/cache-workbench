@@ -5,6 +5,7 @@ import 'font-awesome/css/font-awesome.min.css'
 
 import FontAwesome from 'react-fontawesome'
 import DataExplorer from './components/data-explorer'
+import Analyze from './components/analyze'
 import Dropdown from './components/dropdown'
 import ButtonBar from './components/button-bar'
 import Cache from './services/cache'
@@ -118,7 +119,8 @@ class App extends Component {
             </div>
           </div>
         </div>
-        <DataExplorer cacheClient={this.state.cacheClient} />
+        { this.state.mode === 'Data' && <DataExplorer cacheClient={this.state.cacheClient} /> }
+        { this.state.mode === 'Analyze' && <Analyze cacheClient={this.state.cacheClient} /> }
         <div> <Modal show={this.state.showModal} handleClose={this.hideModal} connection={this.state.selectedDb} /></div>
       </div>
     )

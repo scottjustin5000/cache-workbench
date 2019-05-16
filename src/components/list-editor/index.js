@@ -57,8 +57,8 @@ class ListEditor extends Component {
   }
 
   deleteItem (item, index) {
-    const items = this.props.items.filter((itm, idx) => {
-      if (idx !== index) return itm
+    const items = this.props.items.filter((_, idx) => {
+      return (idx !== index)
     })
     this.props.updateItems(items)
   }

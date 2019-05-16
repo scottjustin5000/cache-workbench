@@ -243,6 +243,21 @@ class Cache {
         return Promise.resolve()
     }
   }
+
+  info () {
+    return new Promise((resolve, reject) => {
+      this.getClient().info((err, res) => {
+        if (err) {
+          console.log(err)
+          return reject(err)
+        }
+        const data = res.split('\n').map(line => {
+          return line
+        })
+        resolve(data)
+      })
+    })
+  }
 }
 
 export default Cache
