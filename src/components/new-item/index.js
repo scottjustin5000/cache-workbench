@@ -125,7 +125,7 @@ class NewItemModal extends React.Component {
               <h3>Add New Key Value Pair</h3>
               <fieldset>
                 <div className='configure-control-panel'>
-                  <div className='new-item-type-wrapper' style={{textAlign: 'left'}}>
+                  <div className='new-item-type-wrapper'>
                     <Dropdown
                       title='Data Type'
                       list={this.state.dataTypes}
@@ -133,7 +133,7 @@ class NewItemModal extends React.Component {
                     />
                   </div>
                   {
-                    this.state.selectedType === CollectionTypes.STRING && <div style={{display: 'flex', margin: 'auto 5px'}}>
+                    this.state.selectedType === CollectionTypes.STRING && <div className='compression-controls'>
                       <div className='editor-control-item' onClick={this.compress}><FontAwesome name='compress' style={{color: '#ffffff'}} />  </div>
                       <div className='editor-control-item' onClick={this.expand}><FontAwesome name='expand' style={{color: '#ffffff'}} />  </div>
                     </div>

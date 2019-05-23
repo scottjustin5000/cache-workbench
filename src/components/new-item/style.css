@@ -148,3 +148,7 @@ fieldset {
   color: #ffffff;
 }
 
+.compression-controls {
+  display: flex; 
+  margin: auto 5px;
+}

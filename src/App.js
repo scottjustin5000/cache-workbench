@@ -135,7 +135,7 @@ class App extends Component {
                 onItemDelete={this.deleteConnection}
                 onItemEdit={this.editConnection}
               />
-              <a href='#' onClick={this.newServer} className='btn btn-4'><span>New <FontAwesome name='bolt' /></span></a>
+              <a href='#' onClick={this.newServer} className='btn-new-con'><span>New <FontAwesome name='bolt' /></span></a>
             </div>
           </div>
           <div className='b-bar-container'>

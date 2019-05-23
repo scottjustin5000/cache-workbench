@@ -15,7 +15,6 @@
 	text-rendering:optimizeLegibility;
 }
 
-
 .server-configure {
 	background:#383838; 
 	padding:25px;
@@ -44,7 +43,7 @@ fieldset {
 	width: 100%;
 }
 
-.server-configure input[type="text"], .server-configure input[type="password"], .server-configure input[type="number"]{
+.server-configure input{
 	width:90%;
 	border:1px solid #CCC;
 	background:#FFF;
@@ -52,7 +51,7 @@ fieldset {
 	padding:10px;
 }
 
-.server-configure input[type="text"]:hover, .server-configure input[type="password"]:hover , .server-configure input[type="number"]:hover{
+.server-configure input:hover{
 	-webkit-transition:border-color 0.3s ease-in-out;
 	-moz-transition:border-color 0.3s ease-in-out;
 	transition:border-color 0.3s ease-in-out;
