@@ -76,9 +76,7 @@ fieldset {
 	padding:10px;
 	font-size:15px;
 }
-/*
-Need to figure out how to hadnele disabled
-*/
+
 .configure-button:hover {
 	background:#09C;
 	-webkit-transition:background 0.3s ease-in-out;
@@ -117,6 +115,7 @@ Need to figure out how to hadnele disabled
 :-ms-input-placeholder {
  color:#888;
 }
+
 .close {
   position: absolute;
   cursor:pointer;

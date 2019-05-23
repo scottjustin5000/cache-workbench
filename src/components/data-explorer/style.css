@@ -31,12 +31,14 @@ background-color:#9370DB;
 .pattern-input {
   margin-top: -25px;
 }
+
 .search-input {
 width:80%;
 line-height: 45px;
 padding-left:35px;
 color:#ffffff;
 background-color: #383838; 
+font-size:14px;
 }
 
 .search-input::-webkit-input-placeholder {

@@ -7,10 +7,8 @@
 .pattern-input {
   margin-top: -25px;
 }
-.search-input {
-width:80%;
-line-height: 45px;
-padding-left:35px;
+.wrapper {
+margin-left: 8px;
 }
 .b-bar-container {
  flex-grow: 1;

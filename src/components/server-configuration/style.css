@@ -15,7 +15,6 @@
 	text-rendering:optimizeLegibility;
 }
 
-.server-configure input[type="text"], #configure input[type="password"], #configure button[type="submit"], #configure input[type="number"]:hover { font:400 12px/16px "Open Sans", Helvetica, Arial, sans-serif; }
 
 .server-configure {
 	background:#383838; 
@@ -25,7 +24,7 @@
 .server-configure h3 {
 	color: #F96;
 	display: block;
-	font-size: 30px;
+	font-size: 24px;
 	font-weight: 400;
 }
 
