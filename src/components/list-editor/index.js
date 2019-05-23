@@ -68,13 +68,13 @@ class ListEditor extends Component {
       <div className='list-view'>
         <main>
           <div className='list-view-header'>
-            <div>
-              <button style={{cursor: 'pointer'}} onClick={this.addItem}><FontAwesome name='plus' /></button>
+            <div style={{marginRight: '5px'}}>
+              <button style={{cursor: 'pointer', width: '24px', margin: '10px'}} onClick={this.addItem}><FontAwesome name='plus' /></button>
             </div>
           </div>
           <ul>
             {(this.props.items || []).map((item, idx) => (
-              <li key={`idxt_${idx}`} onDragOver={() => this.onDragOver(idx)}>
+              <li key={`idxt_${idx}`} onDragOver={() => this.onDragOver(idx)} style={{display: 'flex', margin: '5px'}}>
                 <div
                   style={{marginTop: '12px'}}
                   key={`idx_${idx}`}

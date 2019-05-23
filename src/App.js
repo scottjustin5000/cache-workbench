@@ -21,7 +21,12 @@ class App extends Component {
       dbs: [],
       showModal: false,
       cacheClient: null,
-      selectedDb: {}
+      selectedDb: {
+        name: '',
+        host: '',
+        port: 6379,
+        password: ''
+      }
     }
     this.handleChange = this.handleChange.bind(this)
     this.onDbSelected = this.onDbSelected.bind(this)
@@ -29,6 +34,8 @@ class App extends Component {
     this.hideModal = this.hideModal.bind(this)
     this.deleteConnection = this.deleteConnection.bind(this)
     this.editConnection = this.editConnection.bind(this)
+    this.onConnectionChanged = this.onConnectionChanged.bind(this)
+    this.onSaveConnection = this.onSaveConnection.bind(this)
   }
 
   resetDbs () {
@@ -92,6 +99,28 @@ class App extends Component {
     })
   }
 
+  onConnectionChanged (key, value) {
+    const mod = Object.assign({}, this.state.selectedDb)
+    mod[key] = value
+    this.setState({
+      selectedDb: mod
+    })
+  }
+
+  async onSaveConnection () {
+    await CacheConfiguration.saveDb(this.state.selectedDb)
+    this.resetDbs()
+    this.setState({
+      selectedDb: {
+        name: '',
+        host: '',
+        port: 6379,
+        password: ''
+      },
+      showModal: false
+    })
+  }
+
   render () {
     return (
       <div className='app'>
@@ -121,7 +150,7 @@ class App extends Component {
         </div>
         { this.state.mode === 'Data' && <DataExplorer cacheClient={this.state.cacheClient} /> }
         { this.state.mode === 'Analyze' && <Analyze cacheClient={this.state.cacheClient} /> }
-        <div> <Modal show={this.state.showModal} handleClose={this.hideModal} connection={this.state.selectedDb} /></div>
+        <div> <Modal onConnectionChanged={this.onConnectionChanged} onSaveConnection={this.onSaveConnection} handleClose={this.hideModal} show={this.state.showModal} connection={this.state.selectedDb} /></div>
       </div>
     )
   }

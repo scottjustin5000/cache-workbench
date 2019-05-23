@@ -8,7 +8,7 @@
   overflow-x: hidden;
 }
 
-.list-view main {
+ .list-view main {
   background-color: #383838;
   color: #fff;
   padding: 10px;
@@ -22,17 +22,8 @@
   list-style: none;
 }
 
-.list-view ul li {
-  background-color: #383838;
-  padding: 10px 10px;
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  line-height: 1;
-}
-
-.list-view li .drag {
-  margin-right: 15px;
+ .list-view li .drag {
+  margin-right: 8px;
   margin-top:2px;
   cursor: move;
 }
@@ -40,30 +31,29 @@
 .list-view li svg {
   height: 2rem;
   color: #fff;
-}
+} 
 
 .content {
   background-color:#383838; 
   border:none; 
   line-height: 30px;
-  color:white;
-  width:100%;
+  color:#ffffff;
+  width:90%;
   border: 1px solid #ffffff;
 }
 
 .list-view-header {
   width: 100%; 
   display: flex; 
-  justify-content: flex-end
+  justify-content: flex-end;
 }
 
 .list-item-index {
-  margin-right: 10px;
+  margin-right: 5px;
   margin-top: 12px;
 }
 
 .delete-item-btn {
-  margin-top: 10px;
-  margin-left: 5px;
+  margin: 10px;
   cursor: pointer;
 }

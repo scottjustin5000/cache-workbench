@@ -1,20 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import './style.css'
-
-import CacheConfiguration from '../../services/cache/configuration'
 
 class ServerConfigurator extends React.Component {
   constructor (props) {
     super(props)
-    const selectedDb = props.connection || {}
     this.state = {
       loading: false,
       saved: false,
-      inerror: false,
-      name: selectedDb.name || '',
-      host: selectedDb.host || '',
-      port: selectedDb.port,
-      password: selectedDb.password || ''
+      inerror: false
     }
     this.saveConfiguration = this.saveConfiguration.bind(this)
     this.onNameChange = this.onNameChange.bind(this)
@@ -24,44 +18,31 @@ class ServerConfigurator extends React.Component {
   }
 
   onNameChange (e) {
-    this.setState({
-      name: e.target.value
-    })
+    this.props.onConnectionChanged('name', e.target.value)
   }
 
   onHostChange (e) {
-    this.setState({
-      host: e.target.value
-    })
+    this.props.onConnectionChanged('host', e.target.value)
   }
 
   onPortChange (e) {
-    this.setState({
-      port: parseInt(e.target.value, 10)
-    })
+    this.props.onConnectionChanged('port', parseInt(e.target.value, 10))
   }
+
   onPasswordChange (e) {
-    this.setState({
-      password: e.target.value
-    })
+    this.props.onConnectionChanged('password', e.target.value)
   }
 
-  componentDidUpdate (prevProps) {
-    if (this.props.connection && Object.keys(this.props.connection).length && prevProps.connection !== this.props.connection) {
-      this.setState({
-        name: this.props.connection.name,
-        host: this.props.connection.host,
-        port: this.props.connection.port,
-        password: this.props.connection.password || ''
-      })
-    }
-  }
-
-  saveConfiguration (e) {
+  async saveConfiguration (e) {
     e.preventDefault()
     e.stopPropagation()
-    CacheConfiguration.saveDb({ name: this.state.name, host: this.state.host, port: this.state.port, password: this.state.password })
-    this.props.handleClose()
+    this.setState({
+      loading: true
+    })
+    await this.props.onSaveConnection()
+    this.setState({
+      loading: true
+    })
   }
 
   render () {
@@ -77,19 +58,19 @@ class ServerConfigurator extends React.Component {
               <h3>Connection Info</h3>
               <h4>configure and connect to your redis server</h4>
               <fieldset>
-                <input value={this.state.name} onChange={this.onNameChange} placeholder='Connection Name' type='text' required autoFocus />
+                <input value={this.props.connection.name} onChange={this.onNameChange} placeholder='Connection Name' type='text' required autoFocus />
               </fieldset>
               <fieldset>
-                <input value={this.state.host} onChange={this.onHostChange} placeholder='Host' type='text' required />
+                <input value={this.props.connection.host} onChange={this.onHostChange} placeholder='Host' type='text' required />
               </fieldset>
               <fieldset>
-                <input value={this.state.port} onChange={this.onPortChange} placeholder='Port' type='text' required />
+                <input value={this.props.connection.port} onChange={this.onPortChange} placeholder='Port' type='text' required />
               </fieldset>
               <fieldset>
-                <input value={this.state.password} onChange={this.onPasswordChange} placeholder='Password' type='password' />
+                <input value={this.props.connection.password} onChange={this.onPasswordChange} placeholder='Password' type='password' />
               </fieldset>
               <fieldset>
-                <button name='submit' type='submit' onClick={this.saveConfiguration} id='contact-submit' data-submit='...Sending'>Submit</button>
+                <button disabled={this.state.loading} name='submit' type='submit' onClick={this.saveConfiguration} id='contact-submit' data-submit='...Sending'>Submit</button>
               </fieldset>
             </form>
           </div>
@@ -97,5 +78,12 @@ class ServerConfigurator extends React.Component {
       </div>
     )
   }
+}
+
+ServerConfigurator.propTypes = {
+  onConnectionChanged: PropTypes.func.isRequired,
+  onSaveConnection: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  connection: PropTypes.object.isRequired
 }
 export default ServerConfigurator
