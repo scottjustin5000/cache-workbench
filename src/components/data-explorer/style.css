@@ -3,31 +3,6 @@
   background-color:#383838; 
   /* height: 100vh; */
 }
-.data-explorer-top {
-  display: flex;
-}
-.btn {
-  color: #fff; 
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 42px;
-  margin: 0 0 2em;
-  max-width: 100px;
-  position: relative;
-  text-decoration: none;
-  text-transform: uppercase;
-  width: 100%;
-}
-.btn-4 {
-background-color:#9370DB;
-  border: 1px solid #fff;
-  overflow: hidden;
-  position: relative;
-}
-.btn-4 span {
-  z-index: 20;
-}
 .pattern-input {
   margin-top: -25px;
 }
